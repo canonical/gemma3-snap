@@ -1,0 +1,187 @@
+name: gemma
+base: core24
+version: &snap-version "3" # Gemma 3
+summary: Gemma 3 model
+description: |
+  This snap installs an optimized environment for inference with the
+  Gemma 3 Model.
+
+grade: devel
+confinement: strict
+
+assumes:
+  - snapd2.68 # for components support
+
+compression: lzo
+
+environment:
+  # Workaround until it gets set by snapd
+  SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+
+layout:
+  # Wget's default config file
+  # This is to avoid runtime errors and AppArmor denials
+  /etc/wgetrc:
+    bind-file: $SNAP/etc/wgetrc
+  # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
+  /etc/OpenCL/vendors:
+    bind: $SNAP/etc/OpenCL/vendors
+  # Intel icd files use an absolute path to Intel OpenCL shared objects. Use a layout to mount the so files at the expected location
+  /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl:
+    bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
+  # NVIDIA icd specifies only the shared object name: libnvidia-opencl.so.1
+  # libnvidia-opencl.so.1 is inside /snap/stack-utils/x3/usr/lib/x86_64-linux-gnu/, which is already in LD_LIBRARY_PATH
+
+plugs:
+  intel-npu:
+    interface: custom-device
+    custom-device: intel-npu-device
+  npu-libs:
+    interface: content
+    content: npu-libs-2404
+    target: $SNAP/npu-libs
+  # To allow sideloading models by root
+  home:
+    read: all
+    
+hooks:
+  install:
+    environment:
+      # To load libigdrcl.so, for Intel GPU vRAM
+      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
+    plugs:
+      # For hardware detection
+      - hardware-observe
+      - kernel-module-observe
+      - opengl
+
+parts:
+  app-scripts:
+    source: apps
+    plugin: dump
+    organize:
+      "*": bin/
+
+  engines:
+    source: engines
+    plugin: dump
+    organize:
+      "*": engines/
+
+  cli:
+    source: cli # this is a private git submodule which must be cloned separately
+    plugin: go
+    build-snaps:
+      - go/1.24/stable
+    stage-packages:
+      - pciutils
+      - nvidia-utils # for Nvidia vRAM and Cuda Capability detection
+      - clinfo # for Intel GPU vRAM detection
+    organize:
+      bin/cli: bin/gemma
+
+  go-chat-client:
+    source: https://github.com/jpm-canonical/go-chat-client.git
+    source-type: git
+    source-tag: v1.0.0-beta.1
+    plugin: go
+    build-snaps:
+      - go/1.24/stable
+
+  common-runtime-dependencies:
+    plugin: nil
+    stage-packages:
+      - wget # model init
+      - jq # install hook
+    stage-snaps:
+      - yq # install hook
+
+  llamacpp:
+    plugin: dump
+    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6884/llamacpp-b6884-amd64-avx2.zip
+#    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
+    override-build: |
+      craftctl default
+      # Add scripts from snap's repo
+      cp $CRAFT_PROJECT_DIR/components/$CRAFT_PART_NAME/* $CRAFT_PART_INSTALL/
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llamacpp)
+
+  model-4b-it-q4-0-gguf:
+    source: components/model-4b-it-q4-0-gguf
+    plugin: dump
+    organize:
+      "*": (component/model-4b-it-q4-0-gguf)
+
+  mmproj-f16-4b-gguf:
+    source: components/mmproj-f16-4b-gguf
+    plugin: dump
+    organize:
+      "*": (component/mmproj-f16-4b-gguf)
+
+components:
+  #
+  # Engines
+  #
+
+  llamacpp:
+    type: standard
+    summary: llama.cpp Engine using default CPU instruction sets
+    description: LLM inference in C/C++
+    version: b6884
+
+  # 
+  # Models
+  #
+
+  model-4b-it-q4-0-gguf:
+    type: standard
+    summary: Gemma 3 4B instruct QAT Q4_0 GGUF
+    description: Quantized model with 4B parameters in gguf format with Q4_0 weight encoding
+    version: *snap-version
+
+  mmproj-f16-4b-gguf:
+    type: standard
+    summary: MMProj for Gemma 3 4B
+    description: Multimodal projector for Qwen 2.5 VL 3B
+    version: *snap-version
+
+apps:
+  gemma:
+    command: bin/gemma
+    completer: bin/completion.bash
+    plugs:
+      # For hardware detection
+      - hardware-observe
+      - opengl
+      # To access server over network socket
+      - network
+    environment:
+      # To load libigdrcl.so, for Intel GPU vRAM
+      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
+      CHAT: $SNAP/bin/chat.sh
+
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs:
+      # For inference and hardware detection (via init)
+      - opengl
+      # Needed by for cuda-uvmfd to listen on a unix socket?
+      # Needed for server app by inheritance
+      - network-bind
+      # Needed to download resources
+      - network
+      # For hardware detection (via init)
+      - hardware-observe
+      # For sideloading models
+      - home
+      # Intel NPU access (device node)
+      - intel-npu 
+      # Intel NPU access (libs) 
+      - npu-libs  
+    environment:
+      # Needed for shared libraries used by llama.cpp
+      # TODO: Should this instead be added in an env file to llamacpp component
+      ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR

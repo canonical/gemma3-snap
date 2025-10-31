@@ -1,0 +1,1 @@
+mmproj-model-f16-4B.gguf filter=lfs diff=lfs merge=lfs -text
