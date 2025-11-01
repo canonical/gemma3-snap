@@ -1,0 +1,10 @@
+#!/bin/bash -eux
+
+source "$SNAP_COMPONENTS/llamacpp/server.rc"
+
+exec "$SERVER_ENTRYPOINT" \
+  --model "$MODEL_FILE" \
+  --mmproj "$MMPROJ_FILE" \
+  --port "$PORT" \
+  --host "$HOST" \
+  "${EXTRA_ARGS[@]}"

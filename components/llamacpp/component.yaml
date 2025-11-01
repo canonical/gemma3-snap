@@ -1,0 +1,26 @@
+environment:
+- OPENAI_BASE_PATH=/v1
+# Append $COMPONENT/usr/lib/$ARCH_TRIPLET for the the staged debs
+# FIXME: why are .so files in /build/bin? Adding bin to LD_LIBRARY_PATH is not ideal.
+# Can bin and lib be organized better?
+- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/lib/$ARCH_TRIPLET:$COMPONENT/build/bin
+- SERVER_ENTRYPOINT=$COMPONENT/build/bin/llama-server
+
+# pre-run: |
+#   PORT="$(gemma get http.port)"
+#   HOST="$(gemma get http.host)"
+
+  # EXTRA_ARGS=()
+
+  # verbose="$(gemma get verbose)"
+  # if [ "${verbose}" = "true" ]; then
+  #   EXTRA_ARGS+=(--verbose)
+  # fi
+
+# run: |
+#   exec "$SERVER_ENTRYPOINT" \
+#     --model "$MODEL_FILE" \
+#     --mmproj "$MMPROJ_FILE" \
+#     --port "$PORT" \
+#     --host "$HOST" \
+#     "${EXTRA_ARGS[@]}"

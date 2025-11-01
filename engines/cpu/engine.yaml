@@ -16,4 +16,7 @@ components:
   - llamacpp
   - model-4b-it-q4-0-gguf
   - mmproj-f16-4b-gguf
-configurations:
+# configurations:
+
+# run: |
+#   # custom server script

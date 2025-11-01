@@ -15,7 +15,7 @@ check_missing_components() {
 wait_for_components() {
     local required_components
 
-    required_components="$(qwen-vl show-engine | yq .components[])"
+    required_components="$(gemma show-engine | yq .components[])"
 
     missing_components=()
     check_missing_components missing_components "$required_components"
@@ -36,12 +36,12 @@ wait_for_components() {
         echo "Please use \"snap changes\" to monitor the progress and start the service once all components are installed."
 
         # Stop service to avoid indefinite retries by systemd, until the next reboot
-        snapctl stop qwen-vl
+        snapctl stop gemma
         exit 1
     fi
 }
 
 wait_for_components
 
-engine="$(qwen-vl show-engine | yq .name)"
-exec "$SNAP/engines/$engine/server" "$@"
+engine="$(gemma show-engine | yq .name)"
+gemma run "$SNAP/engines/$engine/server"

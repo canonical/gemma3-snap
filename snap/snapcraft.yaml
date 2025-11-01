@@ -68,6 +68,7 @@ parts:
     organize:
       "*": engines/
 
+  # TODO: source from git
   cli:
     source: cli # this is a private git submodule which must be cloned separately
     plugin: go
@@ -102,8 +103,13 @@ parts:
 #    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
     override-build: |
       craftctl default
+
+      # FIXME: Changes to the following source files will not clear the cache, because the part's source is a URL
+
       # Add scripts from snap's repo
       cp $CRAFT_PROJECT_DIR/components/$CRAFT_PART_NAME/* $CRAFT_PART_INSTALL/
+    stage-packages:
+      - libgomp1
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp)
@@ -160,7 +166,7 @@ apps:
     environment:
       # To load libigdrcl.so, for Intel GPU vRAM
       OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
-      CHAT: $SNAP/bin/chat.sh
+      CHAT: $SNAP/bin/go-chat-client
 
   server:
     command: bin/server.sh

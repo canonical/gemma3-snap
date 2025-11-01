@@ -1,0 +1,2 @@
+environment:
+- MMPROJ_FILE=$COMPONENT/mmproj-model-f16-4B.gguf

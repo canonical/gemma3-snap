@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+
+PORT="$(gemma get http.port)"
+HOST="$(gemma get http.host)"
+
+EXTRA_ARGS=()
+
+verbose="$(gemma get verbose)"
+if [ "${verbose}" = "true" ]; then
+  EXTRA_ARGS+=(--verbose)
+fi
