@@ -1,4 +1,4 @@
-name: gemma
+name: gemma3
 base: core24
 version: &snap-version "3" # Gemma 3
 summary: Gemma 3 model
