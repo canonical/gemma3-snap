@@ -1,10 +1,9 @@
 name: gemma3
 base: core24
-version: &snap-version "3" # Gemma 3
-summary: Gemma 3 model
+version: v1.0.0
+summary: Gemma 3 inference snap
 description: |
-  This snap installs an optimized environment for inference with the
-  Gemma 3 Model.
+  This snap installs an optimized environment for inference with the Gemma 3 Model.
 
 grade: devel
 confinement: strict
@@ -162,13 +161,11 @@ components:
     type: standard
     summary: Gemma 3 4B instruct QAT Q4_0 GGUF
     description: Quantized model with 4B parameters in gguf format with Q4_0 weight encoding
-    version: *snap-version
 
   mmproj-f16-4b-gguf:
     type: standard
     summary: MMProj for Gemma 3 4B
     description: Multimodal projector for Qwen 2.5 VL 3B
-    version: *snap-version
 
 apps:
   gemma3:
