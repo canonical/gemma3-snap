@@ -1,4 +1,4 @@
-# Gemma snap
+# Gemma3 snap
 
 This snap installs a hardware-optimized engine for inference with the [Gemma 3](https://deepmind.google/models/gemma/gemma-3/) multimodal language model.
 
@@ -6,7 +6,7 @@ This snap installs a hardware-optimized engine for inference with the [Gemma 3](
 
 Clone this repo with its submodules:
 ```shell
-git clone --recurse-submodules https://github.com/canonical/gemma-snap.git
+git clone --recurse-submodules https://github.com/canonical/gemma3-snap.git
 ```
 
 Prepare the required models by following the instructions for each model, under the [components](./components) directory. 
