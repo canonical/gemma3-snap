@@ -78,8 +78,12 @@ parts:
       - pciutils
       - nvidia-utils # for Nvidia vRAM and Cuda Capability detection
       - clinfo # for Intel GPU vRAM detection
+    override-build: |
+      craftctl default
+
+      ln -s ./modelctl $CRAFT_PART_INSTALL/bin/gemma
     organize:
-      bin/cli: bin/gemma
+      bin/cli: bin/modelctl
 
   go-chat-client:
     source: https://github.com/jpm-canonical/go-chat-client.git
@@ -103,6 +107,8 @@ parts:
 #    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
     override-build: |
       craftctl default
+
+      # TODO: add license
 
       # FIXME: Changes to the following source files will not clear the cache, because the part's source is a URL
 

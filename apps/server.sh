@@ -44,4 +44,4 @@ wait_for_components() {
 wait_for_components
 
 engine="$(gemma show-engine | yq .name)"
-gemma run "$SNAP/engines/$engine/server"
+modelctl run "$SNAP/engines/$engine/server"

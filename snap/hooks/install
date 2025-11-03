@@ -11,19 +11,19 @@ exec 2> >(logger --stderr --priority error --tag=$tag)
 # Set generic config
 #
 
-gemma set --package http.port="8326"
-gemma set --package http.host="127.0.0.1"
-gemma set --package verbose="false"
+modelctl set --package http.port="8326"
+modelctl set --package http.host="127.0.0.1"
+modelctl set --package verbose="false"
 
 #
 # Auto select an engine
 #
 
 if snapctl is-connected hardware-observe; then
-    gemma use-engine --auto --assume-yes
+    modelctl use-engine --auto --assume-yes
 elif lscpu -V &> /dev/null; then
     echo "Able to access hardware info without hardware-observe interface connection: assuming dev mode installation."
-    gemma use-engine --auto --assume-yes
+    modelctl use-engine --auto --assume-yes
 else
-    echo "hardware-observe interface not auto connected. Skip auto engine selection."
+    modelctl "hardware-observe interface not auto connected. Skip auto engine selection."
 fi
