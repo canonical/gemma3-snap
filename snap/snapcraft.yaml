@@ -68,9 +68,9 @@ parts:
     organize:
       "*": engines/
 
-  # TODO: source from git
   cli:
-    source: cli # this is a private git submodule which must be cloned separately
+    source: https://github.com/canonical/inference-snaps-cli.git
+    source-branch: comp-env # TODO: remove after merging https://github.com/canonical/inference-snaps-cli/pull/217
     plugin: go
     build-snaps:
       - go/1.24/stable
