@@ -81,7 +81,8 @@ parts:
     override-build: |
       craftctl default
 
-      ln -s ./modelctl $CRAFT_PART_INSTALL/bin/gemma
+      # For tab completion
+      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/gemma3
     organize:
       bin/cli: bin/modelctl
 
@@ -170,8 +171,8 @@ components:
     version: *snap-version
 
 apps:
-  gemma:
-    command: bin/gemma
+  gemma3:
+    command: bin/gemma3
     completer: bin/completion.bash
     plugs:
       # For hardware detection

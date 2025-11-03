@@ -15,7 +15,7 @@ check_missing_components() {
 wait_for_components() {
     local required_components
 
-    required_components="$(gemma show-engine | yq .components[])"
+    required_components="$(modelctl show-engine | yq .components[])"
 
     missing_components=()
     check_missing_components missing_components "$required_components"
@@ -36,12 +36,12 @@ wait_for_components() {
         echo "Please use \"snap changes\" to monitor the progress and start the service once all components are installed."
 
         # Stop service to avoid indefinite retries by systemd, until the next reboot
-        snapctl stop gemma
+        snapctl stop modelctl.server
         exit 1
     fi
 }
 
 wait_for_components
 
-engine="$(gemma show-engine | yq .name)"
+engine="$(modelctl show-engine | yq .name)"
 modelctl run "$SNAP/engines/$engine/server"
