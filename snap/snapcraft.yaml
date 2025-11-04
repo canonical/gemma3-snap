@@ -1,9 +1,10 @@
 name: gemma3
 base: core24
-version: v1.0.0
 summary: Gemma 3 inference snap
 description: |
   This snap installs an optimized environment for inference with the Gemma 3 Model.
+
+adopt-info: version
 
 grade: devel
 confinement: strict
@@ -55,6 +56,11 @@ hooks:
       - opengl
 
 parts:
+  version:
+    plugin: nil
+    override-build: |
+      craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+
   app-scripts:
     source: apps
     plugin: dump
