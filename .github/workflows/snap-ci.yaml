@@ -83,7 +83,6 @@ jobs:
         uses: canonical/inference-snaps-dev/actions/publish@main
         with:
           store-credentials: ${{ secrets.STORE_LOGIN }}
-          snap-track: "2.5"
 
   clean:
     name: Remove label

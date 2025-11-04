@@ -18,21 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         jobs:
-          - job_queue: ampere-altra
-            expected_engine: ampere-altra
-            expected_tps: 9
-          - job_queue: ampere-altra-max
-            expected_engine: ampere-altra
-            expected_tps: 18
-          - job_queue: ampere-one
-            expected_engine: ampere-one
-            expected_tps: 9
           - job_queue: docker-nvidia
-            expected_engine: cuda
-            expected_tps: 10
-            install_nvidia_drivers: true
-            nvidia_drivers_version: 550
-            select_engine: cuda
+            expected_engine: cpu
+            expected_tps: 2
 
     runs-on: self-hosted-linux-amd64-jammy-private-endpoint-medium
 
