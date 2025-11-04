@@ -78,7 +78,7 @@ jobs:
         uses: canonical/action-build@v1
 
       # Requires STORE_LOGIN secret set. Export with:
-      # snapcraft export-login --snaps qwen-vl --channels */edge/* --acls package_access,package_push,package_update,package_release --expires 2026-08-01T00:00:00Z <file>
+      # snapcraft export-login --snaps gemma3 --channels */edge/* --acls package_access,package_push,package_update,package_release --expires 2026-11-01T00:00:00Z <file>
       - name: Publish snap
         uses: canonical/inference-snaps-dev/actions/publish@main
         with:
