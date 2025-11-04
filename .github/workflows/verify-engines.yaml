@@ -11,9 +11,12 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Checkout code
+        uses: actions/checkout@v5
         with:
-          lfs: true
-          submodules: true
+          repository: canonical/inference-snaps-cli
+          path: inference-snaps-cli
 
       - name: Set up Go
         uses: actions/setup-go@v6
@@ -22,5 +25,5 @@ jobs:
 
       - name: Run validation
         run: |
-          cd cli/cmd/cli
+          cd inference-snaps-cli/cmd/cli
           go run . debug validate-engines ../../../engines/**/*.yaml
