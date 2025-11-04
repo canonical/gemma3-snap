@@ -98,7 +98,7 @@ parts:
   common-runtime-dependencies:
     plugin: nil
     stage-snaps:
-      - yq # server.sh
+      - yq # used in server.sh
 
   components-common:
     plugin: dump
