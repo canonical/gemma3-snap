@@ -1,8 +1,5 @@
 #!/bin/bash -eux
 
-echo "ENV:"
-env
-echo "---"
 
 # Engine-specific server execution logic goes here
 
