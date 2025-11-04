@@ -19,10 +19,6 @@ environment:
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
 
 layout:
-  # Wget's default config file
-  # This is to avoid runtime errors and AppArmor denials
-  /etc/wgetrc:
-    bind-file: $SNAP/etc/wgetrc
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
   /etc/OpenCL/vendors:
     bind: $SNAP/etc/OpenCL/vendors
@@ -61,8 +57,8 @@ parts:
     override-build: |
       craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
-  app-scripts:
-    source: apps
+  scripts:
+    source: scripts
     plugin: dump
     organize:
       "*": bin/
@@ -101,11 +97,8 @@ parts:
 
   common-runtime-dependencies:
     plugin: nil
-    stage-packages:
-      - wget # model init
-      - jq # install hook
     stage-snaps:
-      - yq # install hook
+      - yq # used in server.sh
 
   components-common:
     plugin: dump
