@@ -12,7 +12,7 @@ By using, reproducing, modifying, distributing, performing or displaying any por
 
 (b) "**Distribution** " or "**Distribute** " means any transmission, publication, or other sharing of Gemma or Model Derivatives to a third party, including by providing or making Gemma or its functionality available as a hosted service via API, web access, or any other electronic or remote means ("**Hosted Service**").
 
-(c) "**Gemma** " means the set of machine learning language models, trained model weights and parameters identified in the[Appendix](https://ai.google.dev/gemma/terms#appendix), regardless of the source that you obtained it from.
+(c) "**Gemma** " means the set of machine learning language models, trained model weights and parameters identified in the [Appendix](https://ai.google.dev/gemma/terms#appendix), regardless of the source that you obtained it from.
 
 (d) "**Google**" means Google LLC.
 
