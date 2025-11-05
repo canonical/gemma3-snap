@@ -3,16 +3,13 @@ on: [pull_request]
 
 jobs:
   verify-manifests:
-    runs-on: [ self-hosted, linux, amd64, medium, noble ]
+    runs-on: [ ubuntu-latest ]
     steps:
-
-      - name: Install Git LFS
-        run: sudo apt-get update && sudo apt-get install -y git-lfs
 
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Checkout code
+      - name: Checkout inference-snap-cli 
         uses: actions/checkout@v5
         with:
           repository: canonical/inference-snaps-cli
