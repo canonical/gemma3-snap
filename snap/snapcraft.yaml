@@ -102,11 +102,13 @@ parts:
     stage-snaps:
       - yq # used in server.sh
 
-  components-common:
+  component-local-files:
     plugin: dump
     source: components
     organize:
       "llamacpp/*": (component/llamacpp)
+      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       # Add other components here
     prime:
       # Exclude everything not explicitly organized
@@ -130,18 +132,6 @@ parts:
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp)
-
-  model-4b-it-q4-0-gguf:
-    source: components/model-4b-it-q4-0-gguf
-    plugin: dump
-    organize:
-      "*": (component/model-4b-it-q4-0-gguf)
-
-  mmproj-f16-4b-gguf:
-    source: components/mmproj-f16-4b-gguf
-    plugin: dump
-    organize:
-      "*": (component/mmproj-f16-4b-gguf)
 
 components:
   #
