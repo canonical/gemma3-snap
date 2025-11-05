@@ -1,0 +1,29 @@
+#!/bin/bash -eux
+
+# Add staged shared objects
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SNAP_COMPONENTS/openvino-model-server/lib"
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SNAP_COMPONENTS/openvino-model-server/lib/python"
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SNAP_COMPONENTS/openvino-model-server/usr/lib/$ARCH_TRIPLET"
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$SNAP/usr/local/lib"
+export LD_LIBRARY_PATH
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+
+# To find the intel.icd file, containing the path to libigdrcl.so
+export OCL_ICD_VENDORS=$SNAP/etc/OpenCL/vendors
+
+# Add Python dependencies
+export PYTHONPATH="$SNAP_COMPONENTS/openvino-model-server/lib/python:$SNAP_COMPONENTS/openvino-model-server/lib/python3.12/site-packages"
+echo "PYTHONPATH: $PYTHONPATH"
+
+export PORT="$(modelctl get http.port)"
+export HOST="$(modelctl get http.host)"
+
+EXTRA_ARGS=()
+
+verbose="$(qwen-vl get verbose)"
+if [ "${verbose}" = "true" ]; then
+  EXTRA_ARGS+=(--log_level DEBUG)
+fi
+
+export EXTRA_ARGS
+echo "EXTRA_ARGS: ${EXTRA_ARGS[*]}"

@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+
+source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
+
+# The --source_model and --model_repository_path args are pull-related arguments.
+# OVMS does not work when using the alternative --model_name and --model_path arguments.
+# Issue: https://github.com/openvinotoolkit/model_server/issues/3492
+
+set -x
+"$SNAP_COMPONENTS/openvino-model-server/bin/ovms" \
+    --rest_port "$PORT" \
+    --rest_bind_address "$HOST" \
+    --source_model "$MODEL_NAME" \
+    --model_repository_path "$MODEL_PATH" \
+    --target_device "$TARGET_DEVICE" \
+    --task text_generation \
+    --cache_size 2 \
+    "${EXTRA_ARGS[@]}" \
+    "$@"

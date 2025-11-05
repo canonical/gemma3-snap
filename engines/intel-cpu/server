@@ -1,0 +1,7 @@
+#!/bin/bash -eux
+
+
+# Engine-specific server execution logic goes here
+export TARGET_DEVICE=cpu
+
+exec "$SNAP_COMPONENTS/openvino-model-server/server"
