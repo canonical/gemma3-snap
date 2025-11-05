@@ -51,7 +51,7 @@ You may add your own intellectual property statement to your modifications and, 
 
 You must not use any of the Gemma Services:
 
-1. for the restricted uses set forth in the Gemma Prohibited Use Policy at[ai.google.dev/gemma/prohibited_use_policy](https://ai.google.dev/gemma/prohibited_use_policy)("**Prohibited Use Policy**"), which is hereby incorporated by reference into this Agreement; or
+1. for the restricted uses set forth in the Gemma Prohibited Use Policy at [ai.google.dev/gemma/prohibited_use_policy](https://ai.google.dev/gemma/prohibited_use_policy) ("**Prohibited Use Policy**"), which is hereby incorporated by reference into this Agreement; or
 2. in violation of applicable laws and regulations.
 
 To the maximum extent permitted by law, Google reserves the right to restrict (remotely or otherwise) usage of any of the Gemma Services that Google reasonably believes are in violation of this Agreement.
