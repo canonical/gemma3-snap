@@ -121,4 +121,4 @@ Google will not be treated as having waived any rights by not exercising (or del
 - [T5Gemma](https://www.kaggle.com/models/google/t5gemma)
 - [VaultGemma](https://www.kaggle.com/models/google/vaultgemma)
 
-| **Note:** Previous versions of these Terms are[archived here](https://ai.google.dev/gemma/terms-archive).
+| **Note:** Previous versions of these Terms are [archived here](https://ai.google.dev/gemma/terms-archive).
