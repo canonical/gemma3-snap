@@ -1,0 +1,5 @@
+environment:
+- OPENAI_BASE_PATH=/v1
+# Append $COMPONENT/usr/lib/$ARCH_TRIPLET for the the staged debs
+- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/lib:$COMPONENT/usr/lib/$ARCH_TRIPLET
+- SERVER_PATH=$COMPONENT/bin/llama-server

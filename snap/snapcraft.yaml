@@ -106,7 +106,8 @@ parts:
     plugin: dump
     source: components
     organize:
-      "llamacpp/*": (component/llamacpp)
+      "llamacpp-amd64v3/*": (component/llamacpp-amd64v3)
+      "llamacpp-arm64/*": (component/llamacpp-arm64)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       # Add other components here
@@ -125,24 +126,43 @@ parts:
 
   llamacpp-amd64v3:
     plugin: dump
-    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6886/llamacpp-amd64-avx2.tar.gz
-#    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
+    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-amd64v3.tar.gz
+    source-checksum: sha256/093afc762d60e599f543b3c9d60a129375a2383ad144ac49d8066ca0d4cf7cf1
+    override-pull: |
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        craftctl default
+      fi
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
-      "*": (component/llamacpp)
+      "*": (component/llamacpp-amd64v3)
+
+  model-4b-it-q4-0-gguf:
+    source: components/model-4b-it-q4-0-gguf
+    plugin: dump
+    organize:
+      "*": (component/model-4b-it-q4-0-gguf)
+
+  mmproj-f16-4b-gguf:
+    source: components/mmproj-f16-4b-gguf
+    plugin: dump
+    organize:
+      "*": (component/mmproj-f16-4b-gguf)
 
 components:
   #
   # Engines
   #
 
-  llamacpp:
+  llamacpp-amd64v3:
     type: standard
     summary: llama.cpp Engine using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b6884
+
+  llamacpp-arm64:
+    type: standard
+    summary: llama.cpp Engine using default CPU instruction sets
+    description: LLM inference in C/C++
 
   # 
   # Models
