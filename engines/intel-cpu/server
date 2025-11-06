@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 
-# Engine-specific server execution logic goes here
-export TARGET_DEVICE=cpu
+# Supported devices: CPU, GPU, NPU, HETERO, AUTO
+export TARGET_DEVICE=CPU
 
 exec "$SNAP_COMPONENTS/openvino-model-server/server"
