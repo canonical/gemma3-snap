@@ -137,18 +137,6 @@ parts:
     organize:
       "*": (component/llamacpp-amd64v3)
 
-  model-4b-it-q4-0-gguf:
-    source: components/model-4b-it-q4-0-gguf
-    plugin: dump
-    organize:
-      "*": (component/model-4b-it-q4-0-gguf)
-
-  mmproj-f16-4b-gguf:
-    source: components/mmproj-f16-4b-gguf
-    plugin: dump
-    organize:
-      "*": (component/mmproj-f16-4b-gguf)
-
 components:
   #
   # Engines
