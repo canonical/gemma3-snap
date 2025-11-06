@@ -53,10 +53,11 @@ hooks:
 
 parts:
   version:
-    plugin: nil
+    plugin: dump
+    source: .
     build-packages:
       - git-lfs
-    override-build: |
+    override-pull: |
       craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
   scripts:
@@ -110,6 +111,7 @@ parts:
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-asym-ov/*": (component/model-4b-it-int4-asym-ov)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+      "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
       # Exclude everything not explicitly organized
