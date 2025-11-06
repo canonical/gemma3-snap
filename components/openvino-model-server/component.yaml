@@ -1,1 +1,3 @@
 environment:
+  - OPENAI_BASE_PATH=/v3
+  - SERVER_PATH=$COMPONENT/bin/ovms

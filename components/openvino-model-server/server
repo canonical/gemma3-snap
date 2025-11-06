@@ -7,7 +7,7 @@ source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
 # Issue: https://github.com/openvinotoolkit/model_server/issues/3492
 
 set -x
-"$SNAP_COMPONENTS/openvino-model-server/bin/ovms" \
+"$SERVER_PATH" \
     --rest_port "$PORT" \
     --rest_bind_address "$HOST" \
     --source_model "$MODEL_NAME" \
