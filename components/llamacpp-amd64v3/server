@@ -1,6 +1,6 @@
 #!/bin/bash -eux
 
-source "$SNAP_COMPONENTS/llamacpp/server.rc"
+source "$SNAP_COMPONENTS/llamacpp-amd64v3/server.rc"
 
 exec "$SERVER_PATH" \
   --model "$MODEL_FILE" \

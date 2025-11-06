@@ -1,0 +1,16 @@
+name: generic-cpu-arm64
+description: Use CPU with a good balance between speed and accuracy
+vendor: Canonical Ltd
+grade: stable
+devices:
+  anyof:
+    - type: cpu
+      architecture: arm64
+      features: [asimd]  # for ARMv8 ASIMD includes NEON instruction set
+memory: 4G
+disk-space: 8G
+components:
+  - llamacpp-arm64
+  - model-4b-it-q4-0-gguf
+  - mmproj-f16-4b-gguf
+# configurations:

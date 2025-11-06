@@ -3,4 +3,4 @@
 
 # Engine-specific server execution logic goes here
 
-exec "$SNAP_COMPONENTS/llamacpp/server"
+exec "$SNAP_COMPONENTS/llamacpp-arm64/server"
