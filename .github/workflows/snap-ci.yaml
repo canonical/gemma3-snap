@@ -79,7 +79,7 @@ jobs:
       # Requires STORE_LOGIN secret set. Export with:
       # snapcraft export-login --snaps gemma3 --channels */edge/* --acls package_access,package_push,package_update,package_release --expires 2026-11-01T00:00:00Z <file>
       - name: Publish snap
-        uses: canonical/inference-snaps-dev/actions/publish@main
+        uses: canonical/inference-snaps-dev/actions/publish@publish-ignore-comp-ver
         with:
           store-credentials: ${{ secrets.STORE_LOGIN }}
 
