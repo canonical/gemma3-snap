@@ -150,6 +150,9 @@ parts:
   openvino-model-server-python-dependencies:
     plugin: python
     source: components/openvino-model-server
+    build-packages:
+      # Add python explicitly to keep it available to the build environment, even if moved to component
+      - python3.12
     python-packages:
       - Jinja2==3.1.6
       - MarkupSafe==3.0.2
