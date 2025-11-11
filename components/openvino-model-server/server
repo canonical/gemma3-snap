@@ -6,6 +6,9 @@ source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
 # OVMS does not work when using the alternative --model_name and --model_path arguments.
 # Issue: https://github.com/openvinotoolkit/model_server/issues/3492
 
+# Set --pipeline_type VLM  to working around an issue with the default
+# continuous batching pipeline, VLM_CB
+
 set -x
 "$SERVER_PATH" \
     --rest_port "$PORT" \
@@ -13,7 +16,7 @@ set -x
     --source_model "$MODEL_NAME" \
     --model_repository_path "$MODEL_PATH" \
     --target_device "$TARGET_DEVICE" \
+    --pipeline_type VLM \
     --task text_generation \
     --cache_size 2 \
-    "${EXTRA_ARGS[@]}" \
-    "$@"
+    "${EXTRA_ARGS[@]}"
