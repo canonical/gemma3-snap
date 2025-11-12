@@ -9,14 +9,16 @@ source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
 # Set --pipeline_type VLM  to working around an issue with the default
 # continuous batching pipeline, VLM_CB
 
+# The engine must additionally set --target_device CPU|GPU|NPU|etc
+
 set -x
 "$SERVER_PATH" \
     --rest_port "$PORT" \
     --rest_bind_address "$HOST" \
     --source_model "$MODEL_NAME" \
     --model_repository_path "$MODEL_PATH" \
-    --target_device "$TARGET_DEVICE" \
     --pipeline_type VLM \
     --task text_generation \
     --cache_size 2 \
-    "${EXTRA_ARGS[@]}"
+    "${EXTRA_ARGS[@]}" \
+    "$@"
