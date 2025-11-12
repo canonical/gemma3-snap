@@ -17,6 +17,9 @@ compression: lzo
 environment:
   # Workaround until it gets set by snapd
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  # This is to find the intel.icd file, containing the path to libigdrcl.so
+  # Required for Intel GPU detection and communication
+  OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
 
 layout:
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
@@ -42,9 +45,6 @@ plugs:
     
 hooks:
   install:
-    environment:
-      # To load libigdrcl.so, for Intel GPU vRAM
-      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
     plugs:
       # For hardware detection
       - hardware-observe
@@ -206,8 +206,6 @@ apps:
       # To access server over network socket
       - network
     environment:
-      # To load libigdrcl.so, for Intel GPU vRAM
-      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
       CHAT: $SNAP/bin/go-chat-client
 
   server:
