@@ -1,0 +1,3 @@
+#!/bin/bash -eux
+
+exec "$SNAP_COMPONENTS/openvino-model-server/server" --target_device CPU

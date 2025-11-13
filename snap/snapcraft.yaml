@@ -17,6 +17,9 @@ compression: lzo
 environment:
   # Workaround until it gets set by snapd
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  # This is to find the intel.icd file, containing the path to libigdrcl.so
+  # Required for Intel GPU detection and communication
+  OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
 
 layout:
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
@@ -42,9 +45,6 @@ plugs:
     
 hooks:
   install:
-    environment:
-      # To load libigdrcl.so, for Intel GPU vRAM
-      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
     plugs:
       # For hardware detection
       - hardware-observe
@@ -53,10 +53,11 @@ hooks:
 
 parts:
   version:
-    plugin: nil
+    plugin: dump
+    source: .
     build-packages:
       - git-lfs
-    override-build: |
+    override-pull: |
       craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
   scripts:
@@ -108,11 +109,49 @@ parts:
     organize:
       "llamacpp/*": (component/llamacpp)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+      "model-4b-it-int4-asym-ov/*": (component/model-4b-it-int4-asym-ov)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+      "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
       # Exclude everything not explicitly organized
       - -*
+  
+  opencl-driver:
+    # Includes the OpenCL runtime for Intel GPU support
+    plugin: nil
+    build-packages:
+      - wget
+    override-build: |
+      # Only install intel opencl drivers on amd64
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        # Legacy Intel OpenCL Runtime
+        mkdir -p $CRAFT_PART_BUILD/opencl-intel-legacy1
+        cd $CRAFT_PART_BUILD/opencl-intel-legacy1
+        wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-level-zero-gpu-legacy1_1.5.30872.36_amd64.deb
+        wget -q https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
+        dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
+      
+        # Recent Intel OpenCL Runtime
+        mkdir -p $CRAFT_PART_BUILD/opencl-intel
+        cd $CRAFT_PART_BUILD/opencl-intel
+        wget -q https://github.com/intel/intel-graphics-compiler/releases/download/v2.5.6/intel-igc-core-2_2.5.6+18417_amd64.deb
+        wget -q https://github.com/intel/intel-graphics-compiler/releases/download/v2.5.6/intel-igc-opencl-2_2.5.6+18417_amd64.deb
+        wget -q https://github.com/intel/compute-runtime/releases/download/24.52.32224.5/intel-level-zero-gpu_1.6.32224.5_amd64.deb
+        wget -q https://github.com/intel/compute-runtime/releases/download/24.52.32224.5/intel-opencl-icd_24.52.32224.5_amd64.deb
+        wget -q https://github.com/intel/compute-runtime/releases/download/24.52.32224.5/libigdgmm12_22.5.5_amd64.deb
+        dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
+      
+        # Two symlinks are created by installing opencl: 
+        # etc/alternatives/ocloc -> /usr/bin/ocloc-24.52.1, usr/bin/ocloc -> /etc/alternatives/ocloc
+        # These point to outside of the snap and fails store review. They are not required, so remove it.
+        rm $CRAFT_PART_INSTALL/etc/alternatives/ocloc
+        rm $CRAFT_PART_INSTALL/usr/bin/ocloc
+      
+        cd $CRAFT_PART_BUILD
+      fi # End of intel-opencl driver installation
+      
+      craftctl default
 
   llamacpp-license:
     plugin: nil
@@ -125,13 +164,37 @@ parts:
 
   llamacpp-amd64v3:
     plugin: dump
-    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6886/llamacpp-amd64-avx2.tar.gz
+    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-amd64v3.tar.gz
 #    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
     stage-packages:
       - libgomp1
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp)
+
+  openvino-model-server:
+    plugin: dump
+    source: https://github.com/openvinotoolkit/model_server/releases/download/v2025.3/ovms_ubuntu24_python_on.tar.gz
+    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
+    stage-packages:
+      - libxml2
+      - curl
+      - libpython3.12
+    organize:
+      # move everything, including the staged packages
+      "*": (component/openvino-model-server)
+
+  openvino-model-server-python-dependencies:
+    plugin: python
+    source: components/openvino-model-server
+    python-packages:
+      - Jinja2==3.1.6
+      - MarkupSafe==3.0.2
+    organize:
+      "lib": (component/openvino-model-server)
+    stage:
+      - -*
+      
 
 components:
   #
@@ -143,6 +206,12 @@ components:
     summary: llama.cpp Engine using default CPU instruction sets
     description: LLM inference in C/C++
     version: b6884
+
+  openvino-model-server:
+    type: standard
+    summary: OpenVINO Model Server
+    description: OpenVINO Model Server for serving models
+    version: v2025.3
 
   # 
   # Models
@@ -158,6 +227,11 @@ components:
     summary: MMProj for Gemma 3 4B
     description: Multimodal projector for Qwen 2.5 VL 3B
 
+  model-4b-it-int4-asym-ov:
+    type: standard
+    summary: Gemma 3 4B instruct INT4 asymmetric OpenVINO
+    description: Quantized model with 4B parameters in OpenVINO format with INT4 asymmetric weight encoding
+
 apps:
   gemma3:
     command: bin/gemma3
@@ -169,8 +243,6 @@ apps:
       # To access server over network socket
       - network
     environment:
-      # To load libigdrcl.so, for Intel GPU vRAM
-      OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
       CHAT: $SNAP/bin/go-chat-client
 
   server:

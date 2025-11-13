@@ -1,0 +1,16 @@
+name: intel-cpu
+description: Use Intel CPUs
+vendor: Intel Corporation
+grade: stable
+devices:
+  allof:
+    - type: cpu
+      architecture: amd64
+      manufacturer-id: GenuineIntel
+
+memory: 5G
+disk-space: 10G
+components:
+  - openvino-model-server
+  - model-4b-it-int4-asym-ov
+configurations:
