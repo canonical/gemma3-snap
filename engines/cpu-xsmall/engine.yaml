@@ -10,7 +10,7 @@ devices:
     - type: cpu
       architecture: arm64
       features: [asimd]  # for ARMv8 ASIMD includes NEON instruction set
-memory: 0.5G
+memory: 512M
 disk-space: 1G
 components:
   - llamacpp
