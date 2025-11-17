@@ -110,6 +110,7 @@ parts:
       "llamacpp/*": (component/llamacpp)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-asym-ov/*": (component/model-4b-it-int4-asym-ov)
+      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
@@ -216,6 +217,11 @@ components:
   # 
   # Models
   #
+
+  model-270m-it-q4-k-m-gguf:
+    type: standard
+    summary: Gemma 3 270M instruct Q4 model
+    description: Quantized model with 270M parameters in gguf format with Q4_K_M weight encoding
 
   model-4b-it-q4-0-gguf:
     type: standard
