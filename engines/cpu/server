@@ -1,6 +1,3 @@
 #!/bin/bash -eux
 
-
-# Engine-specific server execution logic goes here
-
-exec "$SNAP_COMPONENTS/llamacpp/server"
+exec "$SNAP_COMPONENTS/llamacpp/server" --mmproj "$MMPROJ_FILE"
