@@ -1,7 +1,7 @@
 name: intel-gpu
 description: Use Intel integrated and discrete GPUs
 vendor: Intel Corporation
-grade: stable
+grade: devel
 devices:
   allof:
     - type: cpu
