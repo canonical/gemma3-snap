@@ -62,7 +62,7 @@ devices:
 memory: 4G
 disk-space: 8G
 components:
-  - llamacpp-gdx-spark
+  - llamacpp-dgx-spark
   - model-4b-it-q4-0-gguf
   - mmproj-f16-4b-gguf
 

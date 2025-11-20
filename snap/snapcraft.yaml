@@ -108,6 +108,7 @@ parts:
     source: components
     organize:
       "llamacpp/*": (component/llamacpp)
+      "llamacpp-dgx-spark/*": (component/llamacpp-dgx-spark)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-asym-ov/*": (component/model-4b-it-int4-asym-ov)
       "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
