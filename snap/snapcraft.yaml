@@ -179,7 +179,7 @@ parts:
     source: 
       # Include the binaries for arm64 only
       - on amd64: components/llamacpp-dgx-spark
-      - on arm64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7109/llamacpp-dgx-spark.tar.gz
+      - on arm64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7109/llamacpp-dgx-spark+libcudart13+libcublas13.tar.gz
     stage-packages:
       - libgomp1
     organize:
