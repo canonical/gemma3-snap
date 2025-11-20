@@ -173,25 +173,17 @@ parts:
       # move everything, including the staged packages
       "*": (component/llamacpp)
 
-  llamacpp-cuda:
-    source: https://github.com/ggerganov/llama.cpp.git
-    source-tag: b7109
-    source-depth: 1
-    plugin: cmake
-    build-packages:
-      - nvidia-cuda-toolkit
-    cmake-parameters:
-      - -D LLAMA_CURL=OFF
-      - -D GGML_NATIVE=ON
-      - -D GGML_BACKEND_DL=ON
-      - -D GGML_CPU_ALL_VARIANTS=ON
-      - -D GGML_CUDA=ON
-      - -D CMAKE_CUDA_ARCHITECTURES=all-major
+  llamacpp-dgx-spark:
+    plugin: dump
+    source: 
+      # Include the binaries for arm64 only
+      - on amd64: components/llamacpp-dgx-spark
+      - on arm64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7109/llamacpp-dgx-spark.tar.gz
     stage-packages:
       - libgomp1
     organize:
       # move everything, including the staged packages
-      "*": (component/llamacpp-cuda)
+      "*": (component/llamacpp-dgx-spark)
 
   openvino-model-server:
     plugin: dump
@@ -228,9 +220,9 @@ components:
     description: LLM inference in C/C++
     version: b6884
 
-  llamacpp-cuda:
+  llamacpp-dgx-spark:
     type: standard
-    summary: llama.cpp Engine with CUDA backend
+    summary: llama.cpp Engine with optimizations for NVIDIA DGX Spark
     description: LLM inference in C/C++
     version: b7109
 
