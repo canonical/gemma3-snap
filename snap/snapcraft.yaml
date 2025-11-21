@@ -39,9 +39,9 @@ plugs:
     interface: content
     content: npu-libs-2404
     target: $SNAP/npu-libs
-  # To allow sideloading models by root
-  # home:
-  #   read: all
+  # To allow sideloading models by root daemon
+  home:
+    read: all
     
 hooks:
   install:
