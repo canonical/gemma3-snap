@@ -109,7 +109,7 @@ parts:
     organize:
       "llamacpp/*": (component/llamacpp)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
-      "model-4b-it-int4-asym-ov/*": (component/model-4b-it-int4-asym-ov)
+      "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       "openvino-model-server/*": (component/openvino-model-server)
@@ -233,10 +233,12 @@ components:
     summary: MMProj for Gemma 3 4B
     description: Multimodal projector for Qwen 2.5 VL 3B
 
-  model-4b-it-int4-asym-ov:
+  model-4b-it-int4-fq-ov:
     type: standard
-    summary: Gemma 3 4B instruct INT4 asymmetric OpenVINO
-    description: Quantized model with 4B parameters in OpenVINO format with INT4 asymmetric weight encoding
+    summary: Gemma 3 4B instruct INT4 FQ for OpenVINO
+    description: |
+      This model uses group wise quantization with AWQ and group size 64 for the language model,
+      and full static INT8 quantization for vision model
 
 apps:
   gemma3:
