@@ -7,10 +7,10 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Checkout inference-snap-cli 
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: canonical/inference-snaps-cli
           path: inference-snaps-cli
