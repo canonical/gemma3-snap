@@ -1,3 +1,0 @@
-environment:
-  - MODEL_PATH=$COMPONENT
-  - MODEL_NAME=gemma-3-4b-it-int4_asym-ov
