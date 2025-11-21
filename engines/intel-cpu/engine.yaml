@@ -1,7 +1,7 @@
 name: intel-cpu
 description: Use Intel CPUs
 vendor: Intel Corporation
-grade: devel
+grade: stable
 devices:
   allof:
     - type: cpu
@@ -12,5 +12,5 @@ memory: 5G
 disk-space: 10G
 components:
   - openvino-model-server
-  - model-4b-it-int4-asym-ov
-configurations:
+  - model-4b-it-int4-fq-ov
+# configurations:
