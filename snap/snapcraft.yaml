@@ -14,6 +14,10 @@ assumes:
 
 compression: lzo
 
+platforms:
+  amd64:
+  arm64:
+
 environment:
   # Workaround until it gets set by snapd
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
@@ -163,10 +167,11 @@ parts:
       cp $CRAFT_PART_SRC/LICENSE $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
       cp -r $CRAFT_PART_SRC/licenses/* $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
 
-  llamacpp-amd64v3:
+  llamacpp:
     plugin: dump
-    source: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-amd64v3.tar.gz
-#    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
+    source: 
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-amd64v3.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -175,12 +180,15 @@ parts:
 
   openvino-model-server:
     plugin: dump
-    source: https://github.com/openvinotoolkit/model_server/releases/download/v2025.3/ovms_ubuntu24_python_on.tar.gz
-    source-checksum: sha256/64e9c3f4b3bdfcd9e33e7319d17cd2a30c110bb8e33991413b6f51921cafe845
+    source: 
+      # Source OVMS binaries only on amd64
+      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.3/ovms_ubuntu24_python_on.tar.gz
+      - on arm64: components/openvino-model-server
     stage-packages:
-      - libxml2
-      - curl
-      - libpython3.12
+      - on amd64:
+        - libxml2
+        - curl
+        - libpython3.12
     organize:
       # move everything, including the staged packages
       "*": (component/openvino-model-server)
