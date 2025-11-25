@@ -188,7 +188,7 @@ parts:
       - libgomp1
     organize:
       # move everything, including the staged packages
-      "*": (component/llamacpp)
+      "*": (component/llamacpp-cuda)
 
   openvino-model-server:
     plugin: dump

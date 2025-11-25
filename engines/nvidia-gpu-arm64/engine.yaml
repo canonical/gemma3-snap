@@ -10,8 +10,8 @@ devices:
     - type: gpu
       vendor-id: 0x10de # Nvidia Corporation
       vram: 4G
-memory: 4G
-disk-space: 8G
+memory: 1G
+disk-space: 10G
 components:
   - llamacpp-cuda
   - model-4b-it-q4-0-gguf
