@@ -9,7 +9,7 @@ devices:
       features: [asimd]  # for ARMv8 ASIMD includes NEON instruction set
     - type: gpu
       vendor-id: 0x10de # Nvidia Corporation
-      vram: 4G
+      vram: 5238M
 memory: 1G
 disk-space: 10G
 components:
