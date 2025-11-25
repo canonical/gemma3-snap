@@ -112,6 +112,7 @@ parts:
     source: components
     organize:
       "llamacpp/*": (component/llamacpp)
+      "llamacpp-cuda/*": (component/llamacpp-cuda)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
@@ -178,6 +179,17 @@ parts:
       # move everything, including the staged packages
       "*": (component/llamacpp)
 
+  llamacpp-cuda:
+    plugin: dump
+    source: 
+      - on amd64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7154/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7154/llamacpp-arm64+cuda12.tar.gz
+    stage-packages:
+      - libgomp1
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llamacpp)
+
   openvino-model-server:
     plugin: dump
     source: 
@@ -212,9 +224,16 @@ components:
 
   llamacpp:
     type: standard
-    summary: llama.cpp Engine using default CPU instruction sets
+    summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
     version: b6884
+
+  llamacpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
+    version: b7154
+
 
   openvino-model-server:
     type: standard

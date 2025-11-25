@@ -1,0 +1,18 @@
+#!/bin/bash -eux
+
+port="$(modelctl get http.port)"
+host="$(modelctl get http.host)"
+
+EXTRA_ARGS=()
+
+verbose="$(modelctl get verbose)"
+if [ "${verbose}" = "true" ]; then
+  EXTRA_ARGS+=(--verbose)
+fi
+
+exec "$SERVER_PATH" \
+  --model "$MODEL_FILE" \
+  --port "$port" \
+  --host "$host" \
+  "${EXTRA_ARGS[@]}" \
+  "$@"
