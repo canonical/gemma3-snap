@@ -182,8 +182,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source: 
-      - on amd64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7154/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/farshidtz/llama.cpp-builds/releases/download/b7154/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
