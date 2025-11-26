@@ -158,14 +158,26 @@ parts:
       
       craftctl default
 
+  # 
+  # Additional licenses
+  #
   llamacpp-license:
-    plugin: nil
+    plugin: dump
     source: https://github.com/ggerganov/llama.cpp.git
     source-depth: 1
     override-build: |
-      mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
-      cp $CRAFT_PART_SRC/LICENSE $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
-      cp -r $CRAFT_PART_SRC/licenses/* $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp/
+      mkdir -p $license_dir
+      cp LICENSE $license_dir
+      cp -r licenses/* $license_dir
+  openvino-model-server-license:
+    plugin: dump
+    source: https://github.com/openvinotoolkit/model_server.git
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server/
+      mkdir -p $license_dir
+      cp LICENSE $license_dir
 
   llamacpp:
     plugin: dump
