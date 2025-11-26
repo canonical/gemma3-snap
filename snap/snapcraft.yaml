@@ -97,7 +97,7 @@ parts:
   go-chat-client:
     source: https://github.com/jpm-canonical/go-chat-client.git
     source-type: git
-    source-tag: v1.0.0-beta.1
+    source-tag: v1.0.0-beta.2
     plugin: go
     build-snaps:
       - go/1.24/stable
