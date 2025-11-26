@@ -61,7 +61,7 @@ parts:
     source: .
     build-packages:
       - git-lfs
-    override-pull: |
+    override-build: |
       craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
   scripts:
@@ -170,10 +170,15 @@ parts:
   llamacpp:
     plugin: dump
     source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-amd64v3.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b6887/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7160/llamacpp-amd64-cpu-all-variants.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7160/llamacpp-arm64-cpu-all-variants.tar.gz
     stage-packages:
       - libgomp1
+    override-build: |
+      craftctl default
+      # The ggml shared objects need to be in the same directory as the executable
+      # See https://github.com/ggml-org/llama.cpp/issues/17491
+      mv $CRAFT_PART_INSTALL/lib/libggml-cpu* $CRAFT_PART_INSTALL/bin/
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp)
@@ -214,7 +219,7 @@ components:
     type: standard
     summary: llama.cpp Engine using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b6884
+    version: b7160
 
   openvino-model-server:
     type: standard
