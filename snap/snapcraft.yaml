@@ -19,11 +19,13 @@ platforms:
   arm64:
 
 environment:
-  # Workaround until it gets set by snapd
+  # Path to access current revision of components
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   # This is to find the intel.icd file, containing the path to libigdrcl.so
   # Required for Intel GPU detection and communication
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
+  # Shared libraries that are staged and moved to components
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
 
 layout:
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
@@ -280,7 +282,3 @@ apps:
       - intel-npu 
       # Intel NPU access (libs) 
       - npu-libs  
-    environment:
-      # Needed for shared libraries used by llama.cpp
-      # TODO: Should this instead be added in an env file to llamacpp component
-      ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
