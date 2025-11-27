@@ -84,7 +84,7 @@ parts:
       - go/1.24/stable
     stage-packages:
       - pciutils
-      - nvidia-utils # for Nvidia vRAM and Cuda Capability detection
+      - nvidia-utils-580 # for Nvidia vRAM and Cuda Capability detection
       - clinfo # for Intel GPU vRAM detection
     override-build: |
       craftctl default
