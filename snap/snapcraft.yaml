@@ -62,7 +62,7 @@ parts:
     build-packages:
       - git-lfs
     override-pull: |
-      craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
   scripts:
     source: scripts
