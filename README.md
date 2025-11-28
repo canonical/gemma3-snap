@@ -1,6 +1,5 @@
 # Gemma3 snap
-[![gemma3](https://snapcraft.io/gemma3/badge.svg)](https://snapcraft.io/gemma3) [![Snap CI](https://github.com/canonical/gemma3-snap/actions/workflows/snap-ci.yaml/badge.svg)](https://github.com/canonical/gemma3-snap/actions/workflows/snap-ci.yaml)
-
+[![gemma3](https://snapcraft.io/gemma3/badge.svg)](https://snapcraft.io/gemma3)
 
 This snap installs a hardware-optimized engine for inference with the [Gemma 3](https://deepmind.google/models/gemma/gemma-3/) multimodal language model.
 
