@@ -62,7 +62,7 @@ parts:
     build-packages:
       - git-lfs
     override-pull: |
-      craftctl set version="$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
+      craftctl set version="v3+$(git -C $SNAPCRAFT_PROJECT_DIR describe --always --dirty)"
 
   scripts:
     source: scripts
@@ -84,7 +84,7 @@ parts:
       - go/1.24/stable
     stage-packages:
       - pciutils
-      - nvidia-utils # for Nvidia vRAM and Cuda Capability detection
+      - nvidia-utils-580 # for Nvidia vRAM and Cuda Capability detection
       - clinfo # for Intel GPU vRAM detection
     override-build: |
       craftctl default
@@ -112,6 +112,7 @@ parts:
     source: components
     organize:
       "llamacpp/*": (component/llamacpp)
+      "llamacpp-cuda/*": (component/llamacpp-cuda)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
@@ -158,14 +159,26 @@ parts:
       
       craftctl default
 
+  # 
+  # Additional licenses
+  #
   llamacpp-license:
-    plugin: nil
+    plugin: dump
     source: https://github.com/ggerganov/llama.cpp.git
     source-depth: 1
     override-build: |
-      mkdir -p $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
-      cp $CRAFT_PART_SRC/LICENSE $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
-      cp -r $CRAFT_PART_SRC/licenses/* $CRAFT_PART_INSTALL/usr/share/doc/llamacpp/
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp/
+      mkdir -p $license_dir
+      cp LICENSE $license_dir
+      cp -r licenses/* $license_dir
+  openvino-model-server-license:
+    plugin: dump
+    source: https://github.com/openvinotoolkit/model_server.git
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server/
+      mkdir -p $license_dir
+      cp LICENSE $license_dir
 
   llamacpp:
     plugin: dump
@@ -177,6 +190,17 @@ parts:
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp)
+
+  llamacpp-cuda:
+    plugin: dump
+    source: 
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-arm64+cuda12.tar.gz
+    stage-packages:
+      - libgomp1
+    organize:
+      # move everything, including the staged packages
+      "*": (component/llamacpp-cuda)
 
   openvino-model-server:
     plugin: dump
@@ -212,9 +236,16 @@ components:
 
   llamacpp:
     type: standard
-    summary: llama.cpp Engine using default CPU instruction sets
+    summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
     version: b7161
+
+  llamacpp-cuda:
+    type: standard
+    summary: llama.cpp with CUDA backend
+    description: LLM inference in C/C++
+    version: b7154
+
 
   openvino-model-server:
     type: standard
