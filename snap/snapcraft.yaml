@@ -113,8 +113,8 @@ parts:
 
   common-runtime-dependencies:
     plugin: nil
-    stage-packages:
-      - jq
+    stage-snaps:
+      - yq # used in server.sh
 
   component-local-files:
     plugin: dump
