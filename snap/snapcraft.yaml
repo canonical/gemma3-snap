@@ -18,12 +18,21 @@ platforms:
   amd64:
   arm64:
 
+slots:
+  status:
+    interface: content
+    source:
+      read:
+       - &status-share $SNAP_DATA/share/status
+
 environment:
   # Workaround until it gets set by snapd
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
   # This is to find the intel.icd file, containing the path to libigdrcl.so
   # Required for Intel GPU detection and communication
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
+  # Status directory shared via content interface
+  STATUS_SHARE: *status-share
 
 layout:
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
