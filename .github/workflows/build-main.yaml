@@ -2,7 +2,7 @@ name: Build main branch
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ] # Update if this is a feature branch
 
 jobs:
   build-and-publish:
@@ -12,6 +12,6 @@ jobs:
       # Use the commit that triggered the workflow
       build-sha: ${{ github.sha }}
       # main branch gets published to latest/edge
-      publish-channel: 'latest/edge'
+      publish-channel: 'latest/edge' # Add track if needed, e.g., 24/latest/edge
     secrets:
       store-credentials: ${{ secrets.STORE_LOGIN }}
