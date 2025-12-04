@@ -21,8 +21,6 @@ jobs:
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           gh pr edit $PR_NUMBER --remove-label "needs-build"
-          
-          echo "PUBLISH_CHANNEL=latest/edge/pr-$PR_NUMBER" >> $GITHUB_ENV
 
   build-and-publish:
     uses: canonical/inference-snaps-dev/.github/workflows/build-upload-snap.yml@IENG-1891-refactor-ci
@@ -30,4 +28,4 @@ jobs:
       # Checkout head of PR, not the base which is the context of this workflow
       build-sha: ${{ github.event.pull_request.head.sha }}
       # Publish to a channel with the pr number in it
-      publish-channel: ${{ env.PUBLISH_CHANNEL }}
+      publish-channel: latest/edge/pr-${{ github.event.pull_request.number }}
