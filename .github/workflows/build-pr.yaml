@@ -33,3 +33,5 @@ jobs:
       build-sha: ${{ github.event.pull_request.head.sha }}
       # Publish to a channel with the pr number in it
       publish-channel: latest/edge/pr-${{ github.event.pull_request.number }}
+    secrets:
+      store-credentials: ${{ secrets.STORE_LOGIN }}
