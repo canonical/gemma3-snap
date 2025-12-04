@@ -8,7 +8,7 @@ on:
 
 jobs:
   trigger:
-    name: Comment and trigger build
+    name: Trigger build and remove label
     if: github.event.label.name == 'trigger-build'
     runs-on: ubuntu-latest
     permissions:
@@ -23,7 +23,7 @@ jobs:
           gh pr edit $PR_NUMBER --remove-label "needs-build"
 
   build-and-publish:
-    uses: canonical/inference-snaps-dev/.github/workflows/build-upload-snap.yml@IENG-1891-refactor-ci
+    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
       # Checkout head of PR, not the base which is the context of this workflow
       build-sha: ${{ github.event.pull_request.head.sha }}
