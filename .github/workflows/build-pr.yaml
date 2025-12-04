@@ -3,7 +3,7 @@ name: Build PR when labeled
 on:
   # Use pull_request_target to grant write access to the PR
   # This event runs from the context of the base of the PR rather than its head, affecting the default checkout behavior
-  pull_request:
+  pull_request: # TODO change to pull_request_target after testing
     types: [ labeled ]
 
 jobs:
