@@ -9,25 +9,11 @@ on:
 jobs:
   trigger:
     name: Trigger build and remove label
-    if: github.event.label.name == 'trigger-build'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write # needed to comment on PR
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-        # Need to check out the repo as the gh cli needs it for context
-
-      - name: Remove 'trigger-build' label
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          gh pr edit $PR_NUMBER --remove-label "trigger-build"
+    uses: canonical/inference-snaps-dev/.github/workflows/trigger-by-label.yaml@IENG-1891-refactor-ci
 
   build-and-publish:
     name: Build and publish snap
+    needs: trigger
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
       # Checkout head of PR, not the base which is the context of this workflow
