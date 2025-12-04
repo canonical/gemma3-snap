@@ -1,0 +1,33 @@
+name: Build PR when labeled
+
+on:
+  # Use pull_request_target to grant write access to the PR
+  # This event runs from the context of the base of the PR rather than its head, affecting the default checkout behavior
+  pull_request_target:
+    types: [ labeled ]
+
+jobs:
+  trigger:
+    name: Comment and trigger build
+    if: github.event.label.name == 'trigger-build'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # needed to comment on PR
+    steps:
+      - name: Remove 'trigger-build' label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          gh pr edit $PR_NUMBER --remove-label "needs-build"
+          
+          echo "PUBLISH_CHANNEL=latest/edge/pr-$PR_NUMBER" >> $GITHUB_ENV
+
+  build-and-publish:
+    uses: canonical/inference-snaps-dev/.github/workflows/build-upload-snap.yml@IENG-1891-refactor-ci
+    with:
+      # Checkout head of PR, not the base which is the context of this workflow
+      build-sha: ${{ github.event.pull_request.head.sha }}
+      # Publish to a channel with the pr number in it
+      publish-channel: ${{ env.PUBLISH_CHANNEL }}

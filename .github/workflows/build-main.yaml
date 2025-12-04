@@ -1,0 +1,12 @@
+name: Build main branch
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-publish:
+    uses: canonical/inference-snaps-dev/.github/workflows/build-upload-snap.yml@IENG-1891-refactor-ci
+    with:
+      build-sha: ${{ github.sha }}
+      publish-channel: 'latest/edge'
