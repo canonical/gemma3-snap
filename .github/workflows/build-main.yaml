@@ -6,6 +6,7 @@ on:
 
 jobs:
   build-and-publish:
+    name: Build and publish snap
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
       # Use the commit that triggered the workflow

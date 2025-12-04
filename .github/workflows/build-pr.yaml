@@ -27,6 +27,7 @@ jobs:
           gh pr edit $PR_NUMBER --remove-label "trigger-build"
 
   build-and-publish:
+    name: Build and publish snap
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
       # Checkout head of PR, not the base which is the context of this workflow
