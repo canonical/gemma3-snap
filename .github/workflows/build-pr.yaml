@@ -24,7 +24,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
-          gh pr edit $PR_NUMBER --remove-label "needs-build"
+          gh pr edit $PR_NUMBER --remove-label "trigger-build"
 
   build-and-publish:
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
