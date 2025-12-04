@@ -15,6 +15,10 @@ jobs:
       contents: read
       pull-requests: write # needed to comment on PR
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        # Need to check out the repo as the gh cli needs it for context
+
       - name: Remove 'trigger-build' label
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
