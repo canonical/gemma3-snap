@@ -7,13 +7,11 @@ on:
     types: [ labeled ]
 
 jobs:
-  trigger:
-    name: Trigger build and remove label
+  remove-label:
     uses: canonical/inference-snaps-dev/.github/workflows/trigger-by-label.yaml@IENG-1891-refactor-ci
 
   build-and-publish:
-    name: Build and publish snap
-    needs: trigger
+    needs: remove-label
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
       init-build-script: 'prepare-models.sh'
