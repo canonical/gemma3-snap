@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-publish:
-    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
+    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@main
     with:
       init-build-script: 'prepare-models.sh'
       # Use the commit that triggered the workflow

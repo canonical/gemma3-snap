@@ -8,11 +8,11 @@ on:
 
 jobs:
   remove-label:
-    uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@IENG-1891-refactor-ci
+    uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@main
 
   build-and-publish:
     needs: remove-label
-    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
+    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@main
     with:
       init-build-script: 'prepare-models.sh'
       # Checkout head of PR, not the base which is the context of this workflow
