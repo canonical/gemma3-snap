@@ -16,6 +16,7 @@ jobs:
     needs: trigger
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@IENG-1891-refactor-ci
     with:
+      init-build-script: 'prepare-models.sh'
       # Checkout head of PR, not the base which is the context of this workflow
       build-sha: ${{ github.event.pull_request.head.sha }}
       # Publish to a channel with the pr number in it
