@@ -8,7 +8,7 @@ on:
 
 jobs:
   remove-label:
-    uses: canonical/inference-snaps-dev/.github/workflows/trigger-by-label.yaml@IENG-1891-refactor-ci
+    uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@IENG-1891-refactor-ci
 
   build-and-publish:
     needs: remove-label
