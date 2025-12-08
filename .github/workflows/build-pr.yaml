@@ -1,9 +1,7 @@
 name: Build PR when labeled
 
 on:
-  # This event runs from the context of the base of the PR rather than its head, affecting the default checkout behavior
-  # This prevents execution of unsafe code (workflow yaml) from the head of the pull request.
-  pull_request_target:
+  pull_request:
     types: [ labeled ]
 
 jobs:
@@ -15,7 +13,7 @@ jobs:
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@main
     with:
       init-build-script: 'prepare-models.sh'
-      # Checkout head of PR, not the base which is the context of this workflow
+      # Build head of PR
       build-sha: ${{ github.event.pull_request.head.sha }}
       # Publish to a channel with the pr number in it
       publish-channel: latest/edge/pr-${{ github.event.pull_request.number }} # Add track if needed, e.g., 24/latest/edge/pr-#
