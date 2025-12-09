@@ -1,6 +1,14 @@
 #!/bin/bash -eu
 
-source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
+port="$(modelctl get http.port)"
+host="$(modelctl get http.host)"
+
+extra_args=()
+
+verbose="$(modelctl get verbose)"
+if [ "${verbose}" = "true" ]; then
+  extra_args+=(--log_level DEBUG)
+fi
 
 # The --source_model and --model_repository_path args are pull-related arguments.
 # OVMS does not work when using the alternative --model_name and --model_path arguments.
@@ -13,12 +21,12 @@ source "$SNAP_COMPONENTS/openvino-model-server/server.rc"
 
 set -x
 "$SERVER_PATH" \
-    --rest_port "$PORT" \
-    --rest_bind_address "$HOST" \
+    --rest_port "$port" \
+    --rest_bind_address "$host" \
     --source_model "$MODEL_NAME" \
     --model_repository_path "$MODEL_PATH" \
     --pipeline_type VLM \
     --task text_generation \
     --cache_size 2 \
-    "${EXTRA_ARGS[@]}" \
+    "${extra_args[@]}" \
     "$@"
