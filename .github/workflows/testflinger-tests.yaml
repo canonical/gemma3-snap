@@ -19,13 +19,14 @@ jobs:
       matrix:
         jobs:
           - job_queue: docker-nvidia
-            expected_engine: cpu
+            expected_engine: nvidia-gpu-amd64
             expected_tps: 2
+            nvidia_driver_version: "570"
 
     runs-on: self-hosted-linux-amd64-jammy-private-endpoint-medium
 
     env:
-      TEST_DIR: dev/tests/testflinger
+      TEST_DIR: tests/testflinger
 
     steps:
       - name: Show configuration
@@ -38,7 +39,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          submodules: true
+          repository: canonical/inference-snaps-dev
+          ref: wait-for-install
 
       - name: Add config to testflinger job
         env:
@@ -47,8 +49,7 @@ jobs:
           JOB_QUEUE: ${{ matrix.jobs.job_queue }}
           EXPECTED_ENGINE: ${{ matrix.jobs.expected_engine }}
           EXPECTED_TPS: ${{ matrix.jobs.expected_tps }}
-          INSTALL_NVIDIA_DRIVERS: ${{ matrix.jobs.install_nvidia_drivers }}
-          NVIDIA_DRIVERS_VERSION: ${{ matrix.jobs.nvidia_drivers_version }}
+          INSTALL_NVIDIA_DRIVER_VERSION: ${{ matrix.jobs.nvidia_driver_version }}
           SELECT_ENGINE: ${{ matrix.jobs.select_engine }}
 
         run: |
