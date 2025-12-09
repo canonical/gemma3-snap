@@ -20,7 +20,7 @@ fi
 # The engine must additionally set --target_device CPU|GPU|NPU|etc
 
 set -x
-"$SERVER_PATH" \
+ovms \
     --rest_port "$port" \
     --rest_bind_address "$host" \
     --source_model "$MODEL_NAME" \

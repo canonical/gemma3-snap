@@ -1,11 +1,12 @@
 environment:
   - OPENAI_BASE_PATH=/v3
-  - SERVER_PATH=$COMPONENT/bin/ovms
-  # Staged shared objects
+  # Add OVMS binaries
+  - PATH=$PATH:$COMPONENT/bin
+  # Add staged shared objects
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/lib
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/lib/$ARCH_TRIPLET
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/local/lib
-  # Python dependencies
+  # Add Python dependencies
   - PYTHONPATH=$PYTHONPATH:$COMPONENT/lib/python # part of ovms package
   - PYTHONPATH=$PYTHONPATH:$COMPONENT/lib/python3.12/site-packages
   

@@ -1,8 +1,8 @@
 environment:
 - OPENAI_BASE_PATH=/v1
-# Path to the llama.cpp HTTP server binary
-- SERVER_PATH=$COMPONENT/bin/llama-server
-# Append path to llama.cpp-built shared libraries
+# Add llama.cpp binaries
+- PATH=$PATH:$COMPONENT/bin
+# Add llama.cpp-built shared libraries
 - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/lib
-# Append path to staged shared libraries
+# Add staged shared libraries
 - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/lib/$ARCH_TRIPLET

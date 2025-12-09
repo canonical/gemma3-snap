@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 port="$(modelctl get http.port)"
 host="$(modelctl get http.host)"
@@ -10,7 +10,8 @@ if [ "${verbose}" = "true" ]; then
   EXTRA_ARGS+=(--verbose)
 fi
 
-exec "$SERVER_PATH" \
+set -x
+exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
   --host "$host" \

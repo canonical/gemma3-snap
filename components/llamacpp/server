@@ -12,7 +12,8 @@ fi
 
 # The engine must set --mmproj if a multimodal projector is needed
 
-exec "$SERVER_PATH" \
+set -x
+exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
   --host "$host" \
