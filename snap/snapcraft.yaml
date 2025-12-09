@@ -192,8 +192,8 @@ parts:
   llamacpp:
     plugin: dump
     source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7161/llamacpp-amd64-cpu-all-variants.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7161/llamacpp-arm64-cpu-all-variants.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7162/llamacpp-amd64-cpu-all-variants.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7162/llamacpp-arm64-cpu-all-variants.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -203,8 +203,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source: 
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7159/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7162/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7162/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -247,13 +247,13 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b7161
+    version: b7162
 
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
-    version: b7154
+    version: b7162
 
 
   openvino-model-server:
