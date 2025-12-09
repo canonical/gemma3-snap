@@ -4,14 +4,17 @@ on:
   pull_request:
     types: [ labeled ]
 
+env:
+  TRIGGER_LABEL: trigger-build
+
 jobs:
   remove-label:
     uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@refact-reusable
     with:
-      label: trigger-build
+      label: ${{ env.TRIGGER_LABEL }}
 
   build-and-publish:
-    needs: remove-label
+    if: github.event.label.name == ${{ env.TRIGGER_LABEL }}
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@refact-reusable
     with:
       init-build-script: 'prepare-models.sh'
