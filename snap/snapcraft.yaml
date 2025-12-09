@@ -31,7 +31,7 @@ environment:
   # This is to find the intel.icd file, containing the path to libigdrcl.so
   # Required for Intel GPU detection and communication
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
-  # Shared libraries that are staged and moved to components
+  # To find shared libraries that are staged and moved to components
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   # Status directory shared via content interface
   STATUS_SHARE: *status-share
