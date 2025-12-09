@@ -6,7 +6,6 @@ devices:
   allof:
     - type: cpu
       architecture: amd64
-      flags: [sse4_2, f16c, fma, avx, avx2]
     - type: gpu
       vendor-id: 0x10de # Nvidia Corporation
       vram: 5118M
