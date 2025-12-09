@@ -307,14 +307,13 @@ apps:
     command: bin/server.sh
     daemon: simple
     plugs:
-      # For inference and hardware detection (via init)
+      # For inference and hardware detection
       - opengl
-      # Needed by for cuda-uvmfd to listen on a unix socket?
-      # Needed for server app by inheritance
+      # Needed to bind on network interfaces
       - network-bind
       # Needed to download resources
       - network
-      # For hardware detection (via init)
+      # For hardware detection
       - hardware-observe
       # For sideloading models
       - home
