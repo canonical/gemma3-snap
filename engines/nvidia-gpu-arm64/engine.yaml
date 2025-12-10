@@ -6,7 +6,6 @@ devices:
   allof:
     - type: cpu
       architecture: arm64
-      features: [asimd]  # for ARMv8 ASIMD includes NEON instruction set
     - type: gpu
       vendor-id: 0x10de # Nvidia Corporation
       # vram: 5238M See https://github.com/canonical/inference-snaps-cli/issues/232
