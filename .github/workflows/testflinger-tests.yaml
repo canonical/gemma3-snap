@@ -40,7 +40,6 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: canonical/inference-snaps-dev
-          ref: wait-for-install
 
       - name: Add config to testflinger job
         env:
