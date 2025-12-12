@@ -43,8 +43,6 @@ layout:
   # Intel icd files use an absolute path to Intel OpenCL shared objects. Use a layout to mount the so files at the expected location
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
-  # NVIDIA icd specifies only the shared object name: libnvidia-opencl.so.1
-  # libnvidia-opencl.so.1 is inside /snap/stack-utils/x3/usr/lib/x86_64-linux-gnu/, which is already in LD_LIBRARY_PATH
 
 plugs:
   intel-npu:
