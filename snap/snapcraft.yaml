@@ -104,6 +104,10 @@ parts:
       ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/gemma3
     organize:
       bin/cli: bin/modelctl
+    prime:
+      # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
+      # See: https://github.com/canonical/inference-snaps/issues/148
+      - -etc/OpenCL/vendors/nvidia.icd
 
   go-chat-client:
     source: https://github.com/jpm-canonical/go-chat-client.git
