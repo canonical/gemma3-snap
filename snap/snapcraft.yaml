@@ -172,38 +172,6 @@ parts:
       
       craftctl default
 
-  # Licenses
-  # The license of staged packages are automatically included in the snap at $SNAP/usr/share/doc/
-  # Additional licenses:
-  notice:
-    plugin: nil
-    source: NOTICE
-    source-type: file
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc
-      mkdir -p $license_dir
-      cp NOTICE $license_dir/
-      # Add license files referenced in NOTICE
-      cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
-      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-gemma.md $license_dir/
-  llamacpp-license:
-    plugin: dump
-    source: https://github.com/ggerganov/llama.cpp.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/
-      cp -r licenses/* $license_dir/
-  openvino-model-server-license:
-    plugin: dump
-    source: https://github.com/openvinotoolkit/model_server.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/
-
   llamacpp:
     plugin: dump
     source: 
@@ -251,7 +219,38 @@ parts:
       "lib": (component/openvino-model-server)
     stage:
       - -*
-      
+
+  # Licenses
+  # The license of staged packages are automatically included in the snap at $SNAP/usr/share/doc/
+  # Additional licenses:
+  notice:
+    plugin: nil
+    source: NOTICE
+    source-type: file
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc
+      mkdir -p $license_dir
+      cp NOTICE $license_dir/
+      # Add license files referenced in NOTICE
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
+      cp $SNAPCRAFT_PROJECT_DIR/LICENSE-gemma.md $license_dir/
+  llamacpp-license:
+    plugin: dump
+    source: https://github.com/ggerganov/llama.cpp.git
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
+      mkdir -p $license_dir
+      cp LICENSE $license_dir/
+      cp -r licenses/* $license_dir/
+  openvino-model-server-license:
+    plugin: dump
+    source: https://github.com/openvinotoolkit/model_server.git
+    source-depth: 1
+    override-build: |
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server
+      mkdir -p $license_dir
+      cp LICENSE $license_dir/  
 
 components:
   #
