@@ -221,7 +221,7 @@ parts:
       - -*
 
   # Licenses
-  # The license of staged packages are automatically included in the snap at $SNAP/usr/share/doc/
+  # The licenses of staged packages are automatically included in the snap at $SNAP/usr/share/doc/
   # Additional licenses:
   notice:
     plugin: nil
