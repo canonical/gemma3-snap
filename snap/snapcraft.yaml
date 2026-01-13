@@ -87,7 +87,7 @@ parts:
 
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
-    source-tag: v1.0.0-beta.26
+    source-tag: v1.0.0-beta.27
     plugin: go
     build-snaps:
       - go/1.24/stable
