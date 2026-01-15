@@ -24,7 +24,7 @@ jobs:
             nvidia_driver_version: "570"
           - job_queue: 202409-35842 # ProLiant DL360 Gen9 with Intel(R) Xeon(R) CPU E5-2690 v3 @ 2.60GHz
             select_engine: intel-cpu
-            expected_tps: 1
+            expected_tps: 8 # samples: 8.51
 
     runs-on: self-hosted-linux-amd64-jammy-private-endpoint-medium
 
