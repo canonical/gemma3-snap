@@ -147,28 +147,29 @@ parts:
   intel-graphics:
     plugin: nil
     stage-packages:
-      - intel-media-va-driver-non-free
-      - intel-metrics-discovery
-      - intel-ocloc
-      - intel-opencl-icd
-      - libigc2
-      - libigc-tools
-      - libigdfcl2
-      - libigdgmm12
-      - libmfx1
-      - libmfx-gen1
-      - libva-drm2
-      - libva-glx2
-      - libva-wayland2
-      - libva-x11-2
-      - libvpl2
-      - libze1
-      - libze-intel-gpu1
-      - ocl-icd-libopencl1
-      # Note, these -dev packages deliver development sym links that
-      # may be dynamically loaded by Intel compute runtime drivers.
-      - libigc-dev
-      - libigdfcl-dev
+      - on amd64:
+        - intel-media-va-driver-non-free
+        - intel-metrics-discovery
+        - intel-ocloc
+        - intel-opencl-icd
+        - libigc2
+        - libigc-tools
+        - libigdfcl2
+        - libigdgmm12
+        - libmfx1
+        - libmfx-gen1
+        - libva-drm2
+        - libva-glx2
+        - libva-wayland2
+        - libva-x11-2
+        - libvpl2
+        - libze1
+        - libze-intel-gpu1
+        - ocl-icd-libopencl1
+        # Note, these -dev packages deliver development sym links that
+        # may be dynamically loaded by Intel compute runtime drivers.
+        - libigc-dev
+        - libigdfcl-dev
     prime:
       - -usr/include
 
