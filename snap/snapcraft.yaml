@@ -148,6 +148,13 @@ parts:
     stage-packages:
       - on amd64:
           - intel-opencl-icd # Recent intel opencl drivers are installed from ppa:kobuk-team/intel-graphics
+          # OpenVINO Intel GPU dependencies
+          - intel-level-zero-gpu
+          - libze-intel-gpu-dev
+          - libigc-dev
+          - libigc-tools
+          - libigdfcl-dev
+          - intel-ocloc
 
   intel-opencl-drivers-legacy:
     plugin: nil
