@@ -126,18 +126,18 @@ parts:
     organize:
       "llamacpp/*": (component/llamacpp)
       "llamacpp-cuda/*": (component/llamacpp-cuda)
-      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+#      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
-      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
-      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+#      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
+#      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
       # Exclude everything not explicitly organized
       - -*
   
-  opencl-driver:
-    # Includes the OpenCL runtime for Intel GPU support
+  intel-opencl-icd:
+    # Includes the OpenCL ICDs for Intel GPU vRAM lookup
     plugin: nil
     build-packages:
       - wget
@@ -146,35 +146,12 @@ parts:
     override-build: |
       # Intel Compute Runtime is only published for amd64
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
-        # Legacy: https://github.com/intel/compute-runtime/releases/tag/24.35.30872.36
-        mkdir -p $CRAFT_PART_BUILD/opencl-intel-legacy1
-        cd $CRAFT_PART_BUILD/opencl-intel-legacy1
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-core_1.0.17537.24_amd64.deb
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-opencl_1.0.17537.24_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-level-zero-gpu-legacy1_1.5.30872.36_amd64.deb
+        # Legacy
         wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/libigdgmm12_22.5.0_amd64.deb
-        dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
-      
-        # Latest: https://github.com/intel/compute-runtime/releases/tag/26.01.36711.4
-        mkdir -p $CRAFT_PART_BUILD/opencl-intel
-        cd $CRAFT_PART_BUILD/opencl-intel
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-core-2_2.27.10+20617_amd64.deb
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-opencl-2_2.27.10+20617_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-ocloc_26.01.36711.4-0_amd64.deb
+        # Latest
         wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-opencl-icd_26.01.36711.4-0_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libigdgmm12_22.9.0_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libze-intel-gpu1_26.01.36711.4-0_amd64.deb
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
-      
-        # Two symlinks are created when installing ocloc: 
-        # etc/alternatives/ocloc -> /usr/bin/ocloc-24.52.1, usr/bin/ocloc -> /etc/alternatives/ocloc
-        # These point to outside of the snap and fails store review. They are not required, so remove it.
-        rm $CRAFT_PART_INSTALL/etc/alternatives/ocloc
-        rm $CRAFT_PART_INSTALL/usr/bin/ocloc
-      
-        cd $CRAFT_PART_BUILD
-      fi # End of intel-opencl driver installation
+      fi
       
       craftctl default
 
@@ -225,6 +202,49 @@ parts:
       "lib": (component/openvino-model-server)
     stage:
       - -*
+
+  intel-compute-runtime:
+    plugin: nil
+    stage-packages:
+      - ocl-icd-libopencl1
+    override-build: |
+      # Intel Compute Runtime is only published for amd64
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        # First install the legacy support version. Then install the latest, so that latest can override any old libraries.
+      
+        # Legacy: https://github.com/intel/compute-runtime/releases/tag/24.35.30872.36
+        mkdir -p $CRAFT_PART_BUILD/opencl-intel-legacy1
+        cd $CRAFT_PART_BUILD/opencl-intel-legacy1
+        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-core_1.0.17537.24_amd64.deb
+        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-opencl_1.0.17537.24_amd64.deb
+        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-level-zero-gpu-legacy1_1.5.30872.36_amd64.deb
+        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/libigdgmm12_22.5.0_amd64.deb
+        dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
+      
+        # Latest: https://github.com/intel/compute-runtime/releases/tag/26.01.36711.4
+        mkdir -p $CRAFT_PART_BUILD/opencl-intel
+        cd $CRAFT_PART_BUILD/opencl-intel
+        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-core-2_2.27.10+20617_amd64.deb
+        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-opencl-2_2.27.10+20617_amd64.deb
+        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-ocloc_26.01.36711.4-0_amd64.deb
+        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libigdgmm12_22.9.0_amd64.deb
+        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libze-intel-gpu1_26.01.36711.4-0_amd64.deb
+        dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
+      
+        # Two symlinks are created when installing ocloc: 
+        # etc/alternatives/ocloc -> /usr/bin/ocloc-24.52.1, usr/bin/ocloc -> /etc/alternatives/ocloc
+        # These point to outside of the snap and fails store review. They are not required, so remove it.
+        rm $CRAFT_PART_INSTALL/etc/alternatives/ocloc
+        rm $CRAFT_PART_INSTALL/usr/bin/ocloc
+      
+        cd $CRAFT_PART_BUILD
+      fi # End of Intel Compute Runtime installation
+      
+      craftctl default
+    organize:
+      # move everything, including the staged packages
+      "*": (component/openvino-model-server)
+
 
   # Licenses
   # The licenses of staged packages are automatically included in the snap at $SNAP/usr/share/doc/

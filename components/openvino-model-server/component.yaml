@@ -5,6 +5,7 @@ environment:
   # Add staged shared objects
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/lib
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/lib/$ARCH_TRIPLET
+  - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/local/lib
   - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/local/lib
   # Add Python dependencies
   - PYTHONPATH=$PYTHONPATH:$COMPONENT/lib/python # part of ovms package
