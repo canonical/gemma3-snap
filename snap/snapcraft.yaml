@@ -216,8 +216,8 @@ parts:
   intel-compute-runtime:
     plugin: nil
     stage-packages:
-      amd64:
-        - ocl-icd-libopencl1
+      - on amd64:
+          - ocl-icd-libopencl1
     override-build: |
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # First install the legacy support version. Then install the latest, so that latest can override any old libraries.
