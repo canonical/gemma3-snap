@@ -126,10 +126,10 @@ parts:
     organize:
       "llamacpp/*": (component/llamacpp)
       "llamacpp-cuda/*": (component/llamacpp-cuda)
-#      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
-#      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
-#      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
+      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
@@ -138,23 +138,24 @@ parts:
   
   intel-opencl-icd:
     # Includes the OpenCL ICDs for Intel GPU vRAM lookup
+    # libigdgmm is also required for vram lookup to work
     plugin: nil
     build-packages:
       - wget
-    stage-packages:
-      - ocl-icd-libopencl1
     override-build: |
       # Intel Compute Runtime is only published for amd64
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # Legacy
         wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
         wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/libigdgmm12_22.5.0_amd64.deb
+      
         # Latest
         wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-opencl-icd_26.01.36711.4-0_amd64.deb
         wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libigdgmm12_22.9.0_amd64.deb
+      
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
-        # Two symlinks are created when installing opencl-icd: 
+        # Two symlinks are created when installing intel-opencl-icd-legacy: 
         # etc/alternatives/ocloc -> /usr/bin/ocloc-24.35.0, usr/bin/ocloc -> /etc/alternatives/ocloc
         # These point to outside of the snap and fails store review. They are not required, so remove it.
         rm $CRAFT_PART_INSTALL/etc/alternatives/ocloc
@@ -213,6 +214,8 @@ parts:
 
   intel-compute-runtime:
     plugin: nil
+    stage-packages:
+      - ocl-icd-libopencl1
     override-build: |
       # Intel Compute Runtime is only published for amd64
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
