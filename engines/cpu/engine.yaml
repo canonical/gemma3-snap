@@ -14,7 +14,5 @@ components:
   - llamacpp
   - model-4b-it-q4-0-gguf
   - mmproj-f16-4b-gguf
-# configurations:
-
-# run: |
-#   # custom server script
+configurations:
+  model: model-270m-it-q4-k-m-gguf # this is to add model visibility to the user
