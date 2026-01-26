@@ -55,7 +55,7 @@ plugs:
   # To allow sideloading models by root daemon
   home:
     read: all
-    
+
 hooks:
   install:
     plugs:
@@ -135,10 +135,10 @@ parts:
     prime:
       # Exclude everything not explicitly organized
       - -*
-  
+
+  # Includes the OpenCL ICDs for Intel GPU vRAM lookup
+  # libigdgmm is also required for vram lookup to work
   intel-opencl-icd:
-    # Includes the OpenCL ICDs for Intel GPU vRAM lookup
-    # libigdgmm is also required for vram lookup to work
     plugin: nil
     build-packages:
       - wget
@@ -212,12 +212,13 @@ parts:
     stage:
       - -*
 
+  # For Intel GPU usage, amd64 only
   intel-compute-runtime:
     plugin: nil
     stage-packages:
-      - ocl-icd-libopencl1
+      amd64:
+        - ocl-icd-libopencl1
     override-build: |
-      # Intel Compute Runtime is only published for amd64
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # First install the legacy support version. Then install the latest, so that latest can override any old libraries.
       
