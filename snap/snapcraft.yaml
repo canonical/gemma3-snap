@@ -23,7 +23,7 @@ slots:
     interface: content
     source:
       read:
-       - &status-share $SNAP_DATA/share/status
+        - &status-share $SNAP_DATA/share/status
 
 environment:
   # Path to access current revision of components
@@ -166,7 +166,7 @@ parts:
 
   llamacpp:
     plugin: dump
-    source: 
+    source:
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7330/llamacpp-amd64.tar.gz
       - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7330/llamacpp-arm64.tar.gz
     stage-packages:
@@ -177,7 +177,7 @@ parts:
 
   llamacpp-cuda:
     plugin: dump
-    source: 
+    source:
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7330/llamacpp-amd64+cuda12.tar.gz
       - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7330/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
@@ -188,15 +188,15 @@ parts:
 
   openvino-model-server:
     plugin: dump
-    source: 
+    source:
       # Source OVMS binaries only on amd64
       - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.3/ovms_ubuntu24_python_on.tar.gz
       - on arm64: components/openvino-model-server
     stage-packages:
       - on amd64:
-        - libxml2
-        - curl
-        - libpython3.12
+          - libxml2
+          - curl
+          - libpython3.12
     organize:
       # move everything, including the staged packages
       "*": (component/openvino-model-server)
@@ -358,6 +358,6 @@ apps:
       # For sideloading models
       - home
       # Intel NPU access (device node)
-      - intel-npu 
+      - intel-npu
       # Intel NPU access (libs) 
       - npu-libs
