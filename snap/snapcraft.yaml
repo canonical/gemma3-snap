@@ -90,7 +90,7 @@ parts:
   cli:
     source: https://github.com/canonical/inference-snaps-cli.git
     # source-tag: v1.0.0-beta.27
-    source-branch: fix-engine
+    source-commit: 6cbf82ee8af893478830719e90d1e25935768705 # https://github.com/canonical/inference-snaps-cli/pull/275
     plugin: go
     build-snaps:
       - go/1.24/stable
@@ -131,7 +131,7 @@ parts:
       "llamacpp-cuda/*": (component/llamacpp-cuda)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
-      "model-270m-it-q4-k-m-gguf/*": (component/model-270m-it-q4-k-m-gguf)
+      "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
       "openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
@@ -283,7 +283,7 @@ components:
   # Models
   #
 
-  model-270m-it-q4-k-m-gguf:
+  model-270m-it-q4-0-gguf:
     type: standard
     summary: Gemma 3 270M instruct Q4 model
     description: Quantized model with 270M parameters in gguf format with Q4_K_M weight encoding
