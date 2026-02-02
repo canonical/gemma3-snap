@@ -7,5 +7,12 @@ exec 1> >(tee >(logger --tag=$tag))
 # Redirect stderr to stderr+syslog
 exec 2> >(logger --stderr --priority error --tag=$tag)
 
-# Apply engine updates
-modelctl use-engine --fix --assume-yes
+# Fix/Upgrade the active engine
+if snapctl is-connected hardware-observe; then
+    modelctl use-engine --fix --assume-yes
+elif lscpu -V &> /dev/null; then
+    echo "Able to access hardware info without hardware-observe interface connection: assuming dev mode installation."
+    modelctl use-engine --fix --assume-yes
+else
+    echo "hardware-observe interface not connected. Skip fixing the active engine."
+fi
