@@ -1,5 +1,5 @@
 name: cpu-xsmall
-description: Use CPU, very low footprints
+description: Use CPU, very low footprints. Text only.
 vendor: Canonical Ltd
 grade: stable
 devices:
@@ -12,4 +12,4 @@ memory: 512M
 disk-space: 1G
 components:
   - llamacpp
-  - model-270m-it-q4-k-m-gguf
+  - model-270m-it-q4-0-gguf
