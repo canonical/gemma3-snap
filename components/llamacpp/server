@@ -3,14 +3,6 @@
 port="$(modelctl get http.port)"
 host="$(modelctl get http.host)"
 
-model_file="$MODEL_FILE"
-
-model="$(modelctl get --engine model)" # equivalent to `modelctl get engine.<engine>.model`
-# If value is an absolute path, use it to override global model file path
-if [[ "$model" = /* ]]; then
-  model_file="$model"
-fi
-
 extra_args=()
 
 verbose="$(modelctl get verbose)"
@@ -22,7 +14,7 @@ fi
 
 set -x
 exec llama-server \
-  --model "$model_file" \
+  --model "$MODEL_FILE" \
   --port "$port" \
   --host "$host" \
   "${extra_args[@]}" \

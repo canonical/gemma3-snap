@@ -1,16 +1,3 @@
 #!/bin/bash -eux
 
-## Alternative, doing it from the engine:
-#
-# model_file="$MODEL_FILE"
-#
-# model="$(modelctl get --engine model)" # equivalent to `modelctl get engine.<engine>.model`
-# # If value is an absolute path, use it to override global model file path
-# if [[ "$model" = /* ]]; then
-#   model_file="$model"
-# fi
-#
-# exec "$SNAP_COMPONENTS/llamacpp/server" --mmproj "$MMPROJ_FILE" --model "$model_file"
-#
-
 exec "$SNAP_COMPONENTS/llamacpp/server" --mmproj "$MMPROJ_FILE"
