@@ -313,12 +313,12 @@ components:
 
   model-270m-it-q4-0-gguf:
     type: standard
-    summary: Gemma 3 270M instruct Q4 model
-    description: Quantized model with 270M parameters in gguf format with Q4_K_M weight encoding
+    summary: Gemma 3 270M instruct Q4_0 GGUF
+    description: Quantized model with 270M parameters in gguf format with Q4_0 weight encoding 
 
   model-4b-it-q4-0-gguf:
     type: standard
-    summary: Gemma 3 4B instruct QAT Q4_0 GGUF
+    summary: Gemma 3 4B instruct Q4_0 GGUF
     description: Quantized model with 4B parameters in gguf format with Q4_0 weight encoding
 
   mmproj-f16-4b-gguf:
