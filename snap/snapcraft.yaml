@@ -192,7 +192,7 @@ parts:
     plugin: dump
     source:
       # Source OVMS binaries only on amd64
-      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.3/ovms_ubuntu24_python_on.tar.gz
+      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
       - on arm64: components/openvino-model-server
     stage-packages:
       - on amd64:
