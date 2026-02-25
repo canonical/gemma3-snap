@@ -15,3 +15,5 @@ components:
   - llamacpp-cuda
   - model-4b-it-q4-0-gguf
   - mmproj-f16-4b-gguf
+configurations:
+  sleep-idle-seconds: 600
