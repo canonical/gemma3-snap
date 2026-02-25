@@ -14,6 +14,7 @@ exec 2> >(logger --stderr --priority error --tag=$tag)
 modelctl set --package http.port="8328"
 modelctl set --package http.host="127.0.0.1"
 modelctl set --package verbose="false"
+modelctl set --package sleep-idle-seconds="600"
 
 #
 # Auto select an engine

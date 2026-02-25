@@ -2,6 +2,7 @@
 
 port="$(modelctl get http.port)"
 host="$(modelctl get http.host)"
+sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 
 extra_args=()
 
@@ -17,5 +18,7 @@ exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
   --host "$host" \
+  --no-warmup \
+  --sleep-idle-seconds "$sleep_idle_seconds"
   "${extra_args[@]}" \
   "$@"
