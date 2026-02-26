@@ -374,3 +374,5 @@ apps:
       - intel-npu
       # Intel NPU access (libs) 
       - npu-libs
+      - system-observe
+      - process-control
