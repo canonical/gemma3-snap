@@ -12,7 +12,7 @@ jobs:
 
   build-and-publish:
     if: github.event.label.name == vars.PR_BUILD_TRIGGER_LABEL
-    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@build-custom-runner
+    uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@v2
     strategy:
       fail-fast: false
       matrix:
