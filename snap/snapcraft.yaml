@@ -6,7 +6,7 @@ description: |
 
 adopt-info: version
 
-grade: stable
+grade: devel
 confinement: strict
 
 assumes:
@@ -189,11 +189,32 @@ parts:
       # move everything, including the staged packages
       "*": (component/llamacpp-cuda)
   
-  llamacpp-rocm:
+  llamacpp-rocm-dependencies:
     plugin: nil
     stage-packages:
       - libgomp1
       - libatomic1
+    organize:
+      "*": (component/llamacpp-rocm)
+  
+  llamacpp-rocm:
+    plugin: nil
+    override-prime: |
+      set +x # reduce noise
+      craftctl default
+      # Download and extract llama.cpp ROCm build from GitHub releases
+      for i in {0..3}; do
+        wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part-0${i}
+      done
+      cat llamacpp-amd64+rocm.tar.gz.part-00 \
+          llamacpp-amd64+rocm.tar.gz.part-01 \
+          llamacpp-amd64+rocm.tar.gz.part-02 \
+          llamacpp-amd64+rocm.tar.gz.part-03 \
+        > llamacpp-amd64+rocm.tar.gz
+      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME
+      rm llamacpp-amd64+rocm.tar.gz.part-*
+      rm llamacpp-amd64+rocm.tar.gz
+    
 
   openvino-model-server:
     plugin: dump
