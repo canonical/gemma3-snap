@@ -12,7 +12,7 @@ confinement: strict
 assumes:
   - snapd2.68 # for components support
 
-compression: lzo
+compression: xz
 
 platforms:
   amd64:
@@ -395,5 +395,5 @@ apps:
       - intel-npu
       # Intel NPU access (libs) 
       - npu-libs
-      - system-observe
+      # Needed to detect AMD rocm capable device
       - process-control
