@@ -204,17 +204,17 @@ parts:
       craftctl default
       # Download and extract llama.cpp ROCm build from GitHub releases
       for i in {0..3}; do
-        wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part-0${i}
+        wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
       done
       # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases#:~:text=Instructions%20on%20how%20to%20build%20llama%2Ecpp%20with%20ROCm%20support
       # Before extracting, concatenate the split archive parts into a single tar.gz file
-      cat llamacpp-amd64+rocm.tar.gz.part-00 \
-          llamacpp-amd64+rocm.tar.gz.part-01 \
-          llamacpp-amd64+rocm.tar.gz.part-02 \
-          llamacpp-amd64+rocm.tar.gz.part-03 \
+      cat llamacpp-amd64+rocm.tar.gz.part00 \
+          llamacpp-amd64+rocm.tar.gz.part01 \
+          llamacpp-amd64+rocm.tar.gz.part02 \
+          llamacpp-amd64+rocm.tar.gz.part03 \
         > llamacpp-amd64+rocm.tar.gz
       tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME
-      rm llamacpp-amd64+rocm.tar.gz.part-*
+      rm llamacpp-amd64+rocm.tar.gz.part*
       rm llamacpp-amd64+rocm.tar.gz
     
 
