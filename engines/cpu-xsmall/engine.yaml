@@ -13,3 +13,5 @@ disk-space: 1G
 components:
   - llamacpp
   - model-270m-it-q4-0-gguf
+configurations:
+  sleep-idle-seconds: 600

@@ -17,5 +17,6 @@ exec llama-server \
   --model "$MODEL_FILE" \
   --port "$port" \
   --host "$host" \
+  --no-warmup \
   "${extra_args[@]}" \
   "$@"

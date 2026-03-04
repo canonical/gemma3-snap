@@ -1,3 +1,5 @@
 #!/bin/bash -eux
 
-exec "$SNAP_COMPONENTS/llamacpp/server"
+sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
+
+exec "$SNAP_COMPONENTS/llamacpp/server" --sleep-idle-seconds "$sleep_idle_seconds"
