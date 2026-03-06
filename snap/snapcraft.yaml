@@ -120,7 +120,7 @@ parts:
   common-runtime-dependencies:
     plugin: nil
     stage-snaps:
-      - yq # used in server.sh
+      - jq
 
   component-local-files:
     plugin: dump
