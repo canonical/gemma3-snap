@@ -1,3 +1,5 @@
 #!/bin/bash -eux
 
-exec "$SNAP_COMPONENTS/llamacpp-cuda/server" --mmproj "$MMPROJ_FILE"
+sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
+
+exec "$SNAP_COMPONENTS/llamacpp-cuda/server" --mmproj "$MMPROJ_FILE" --sleep-idle-seconds "$sleep_idle_seconds"
