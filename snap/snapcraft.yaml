@@ -119,7 +119,7 @@ parts:
 
   common-runtime-dependencies:
     plugin: nil
-    stage-snaps:
+    stage-packages:
       - jq
 
   component-local-files:
