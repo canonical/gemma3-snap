@@ -213,8 +213,8 @@ parts:
           llamacpp-amd64+rocm.tar.gz.part02 \
           llamacpp-amd64+rocm.tar.gz.part03 \
         > llamacpp-amd64+rocm.tar.gz
-      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME --no-same-owner --no-same-permissions
       rm llamacpp-amd64+rocm.tar.gz.part*
+      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME --no-same-owner --no-same-permissions
       rm llamacpp-amd64+rocm.tar.gz
     
 
