@@ -7,5 +7,5 @@ mkdir -p "$STATUS_SHARE"
 modelctl run true --wait-for-components && \
     modelctl status --format=json > "$STATUS_SHARE/status.json"
 
-engine="$(modelctl show-engine | yq .name)"
+engine="$(modelctl show-engine --format=json | jq -r .name)"
 modelctl run "$SNAP/engines/$engine/server" --wait-for-components

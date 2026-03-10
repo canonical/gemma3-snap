@@ -12,7 +12,7 @@ confinement: strict
 assumes:
   - snapd2.68 # for components support
 
-compression: lzo
+compression: xz
 
 platforms:
   amd64:
@@ -81,8 +81,11 @@ parts:
   scripts:
     source: scripts
     plugin: dump
+    stage-packages:
+      - jq
     organize:
-      "*": bin/
+      "server.sh": bin/
+      "completion.bash": bin/
 
   engines:
     source: engines
@@ -91,72 +94,44 @@ parts:
       "*": engines/
 
   cli:
-    source: https://github.com/canonical/inference-snaps-cli.git
-    source-tag: v1.0.0-beta.32
-    plugin: go
-    build-snaps:
-      - go/1.24/stable
-    stage-packages:
-      - pciutils
-      - nvidia-utils-580 # for Nvidia vRAM and Cuda Capability detection
-      - clinfo # for Intel GPU vRAM detection
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.33/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.33/inference-snaps-cli-linux-arm64.tar.xz
+    plugin: dump
     override-build: |
-      craftctl default
+      mkdir -p bin
+      mv cli bin/modelctl
 
       # For tab completion
-      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/gemma3
-    organize:
-      bin/cli: bin/modelctl
+      ln --symbolic ./modelctl bin/gemma3
+
+      craftctl default
+    
+  cli-dependencies:
+    plugin: nil
+    stage-packages:
+      - pciutils # lspci
+      - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
+      - clinfo # used for Intel GPU vRAM detection. It depends on intel-opencl-icd
     prime:
       # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
       # See: https://github.com/canonical/inference-snaps/issues/148
       - -etc/OpenCL/vendors/nvidia.icd
-
-  go-chat-client:
-    source: https://github.com/jpm-canonical/go-chat-client.git
-    source-type: git
-    source-tag: v1.0.0-beta.2
-    plugin: go
-    build-snaps:
-      - go/1.24/stable
-
-  common-runtime-dependencies:
-    plugin: nil
-    stage-snaps:
-      - yq # used in server.sh
-
-  component-local-files:
-    plugin: dump
-    source: components
-    organize:
-      "llamacpp/*": (component/llamacpp)
-      "llamacpp-cuda/*": (component/llamacpp-cuda)
-      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
-      "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
-      "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
-      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
-      "openvino-model-server/*": (component/openvino-model-server)
-      # Add other components here
-    prime:
-      # Exclude everything not explicitly organized
-      - -*
-
-  # Includes the OpenCL ICDs for Intel GPU vRAM lookup
-  # libigdgmm is also required for vram lookup to work
+    
+  # OpenCL ICD and libigdgmm are required for Intel GPU vRAM lookup with clinfo
   intel-opencl-icd:
     plugin: nil
     build-packages:
       - wget
     override-build: |
-      # Intel Compute Runtime is only published for amd64
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # Legacy
-        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/libigdgmm12_22.5.0_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/libigdgmm12_22.5.0_amd64.deb
       
         # Latest
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-opencl-icd_26.01.36711.4-0_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libigdgmm12_22.9.0_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-opencl-icd_26.01.36711.4-0_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libigdgmm12_22.9.0_amd64.deb
       
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
@@ -168,6 +143,23 @@ parts:
       fi
       
       craftctl default
+
+  local-component-files:
+    plugin: dump
+    source: components
+    organize:
+      "llamacpp/*": (component/llamacpp)
+      "llamacpp-cuda/*": (component/llamacpp-cuda)
+      "llamacpp-rocm/*": (component/llamacpp-rocm)
+      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+      "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
+      "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
+      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+      "openvino-model-server/*": (component/openvino-model-server)
+      # Add other components here
+    prime:
+      # Exclude everything not explicitly organized
+      - -*
 
   llamacpp:
     plugin: dump
@@ -190,12 +182,42 @@ parts:
     organize:
       # move everything, including the staged packages
       "*": (component/llamacpp-cuda)
+  
+  llamacpp-rocm-dependencies:
+    plugin: nil
+    stage-packages:
+      - libgomp1
+      - libatomic1
+    organize:
+      "*": (component/llamacpp-rocm)
+  
+  llamacpp-rocm:
+    plugin: nil
+    build-packages:
+      - wget
+    override-prime: |
+      set +x # reduce noise
+      craftctl default
+      # Download and extract llama.cpp ROCm build from GitHub releases
+      for i in {0..3}; do
+        wget -nv https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
+      done
+      # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b7881
+      # Before extracting, concatenate the split archive parts into a single tar.gz file
+      cat llamacpp-amd64+rocm.tar.gz.part00 \
+          llamacpp-amd64+rocm.tar.gz.part01 \
+          llamacpp-amd64+rocm.tar.gz.part02 \
+          llamacpp-amd64+rocm.tar.gz.part03 \
+        > llamacpp-amd64+rocm.tar.gz
+      rm llamacpp-amd64+rocm.tar.gz.part*
+      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME --no-same-owner --no-same-permissions
+      rm llamacpp-amd64+rocm.tar.gz
 
   openvino-model-server:
     plugin: dump
     source:
       # Source OVMS binaries only on amd64
-      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
+      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2026.0/ovms_ubuntu24_python_on.tar.gz
       - on arm64: components/openvino-model-server
     stage-packages:
       - on amd64:
@@ -220,6 +242,8 @@ parts:
   # For Intel GPU usage, amd64 only
   intel-compute-runtime:
     plugin: nil
+    build-packages:
+      - wget
     stage-packages:
       - on amd64:
           - ocl-icd-libopencl1
@@ -230,18 +254,18 @@ parts:
         # Legacy: https://github.com/intel/compute-runtime/releases/tag/24.35.30872.36
         mkdir -p $CRAFT_PART_BUILD/opencl-intel-legacy1
         cd $CRAFT_PART_BUILD/opencl-intel-legacy1
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-core_1.0.17537.24_amd64.deb
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-opencl_1.0.17537.24_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-level-zero-gpu-legacy1_1.5.30872.36_amd64.deb
+        wget -nv https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-core_1.0.17537.24_amd64.deb
+        wget -nv https://github.com/intel/intel-graphics-compiler/releases/download/igc-1.0.17537.24/intel-igc-opencl_1.0.17537.24_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-level-zero-gpu-legacy1_1.5.30872.36_amd64.deb
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
         # Latest: https://github.com/intel/compute-runtime/releases/tag/26.01.36711.4
         mkdir -p $CRAFT_PART_BUILD/opencl-intel
         cd $CRAFT_PART_BUILD/opencl-intel
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-core-2_2.27.10+20617_amd64.deb
-        wget https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-opencl-2_2.27.10+20617_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-ocloc_26.01.36711.4-0_amd64.deb
-        wget https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libze-intel-gpu1_26.01.36711.4-0_amd64.deb
+        wget -nv https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-core-2_2.27.10+20617_amd64.deb
+        wget -nv https://github.com/intel/intel-graphics-compiler/releases/download/v2.27.10/intel-igc-opencl-2_2.27.10+20617_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/intel-ocloc_26.01.36711.4-0_amd64.deb
+        wget -nv https://github.com/intel/compute-runtime/releases/download/26.01.36711.4/libze-intel-gpu1_26.01.36711.4-0_amd64.deb
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
         cd $CRAFT_PART_BUILD
@@ -302,6 +326,10 @@ components:
     description: LLM inference in C/C++
     version: b7881
 
+  llamacpp-rocm:
+    type: standard
+    summary: llama.cpp with ROCm backend
+    description: LLM inference in C/C++ on AMD GPUs
 
   openvino-model-server:
     type: standard
@@ -346,7 +374,6 @@ apps:
       # To access server over network socket
       - network
     environment:
-      CHAT: $SNAP/bin/go-chat-client
       LD_LIBRARY_PATH: /usr/lib/wsl/lib:$LD_LIBRARY_PATH
 
   server:
@@ -369,3 +396,5 @@ apps:
       - intel-npu
       # Intel NPU access (libs) 
       - npu-libs
+      # Needed to detect AMD rocm capable device
+      - process-control

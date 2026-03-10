@@ -1,0 +1,18 @@
+name: amd-gpu
+description: "Use ROCm for inference on AMD GPUs. Supported architectures are gfx908, gfx90a, gfx942, gfx950, gfx1010, gfx1011, gfx1012, gfx1030, gfx1031, gfx1032, gfx1034, gfx1100, gfx1101, gfx1102, gfx1103, gfx1150, gfx1151, gfx1152, gfx1200, gfx1201"
+vendor: Canonical Ltd
+grade: devel
+devices:
+  allof:
+    - type: cpu
+      architecture: amd64
+    - type: gpu
+      vendor-id: 0x1002 # AMD Corporation
+memory: 1G
+disk-space: 10G
+components:
+  - llamacpp-rocm
+  - model-4b-it-q4-0-gguf
+  - mmproj-f16-4b-gguf
+configurations:
+  sleep-idle-seconds: 600

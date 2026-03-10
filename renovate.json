@@ -11,7 +11,7 @@
         "^snap/snapcraft\\.yaml$"
       ],
       "matchStrings": [
-        "source:\\s*https://github\\.com/canonical/inference-snaps-cli\\.git\\s*\\n\\s*source-tag:\\s*(?<currentValue>[^\\s]+)"
+        "https://github\\.com/canonical/inference-snaps-cli/releases/download/(?<currentValue>v[^/]+)/inference-snaps-cli"
       ],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "canonical/inference-snaps-cli",
