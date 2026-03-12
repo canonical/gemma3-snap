@@ -199,7 +199,7 @@ parts:
       set +x # reduce noise
       craftctl default
       # Download and extract llama.cpp ROCm build from GitHub releases
-      wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/test-release/llamacpp-amd64+rocm.tar.gz
+      wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+rocm.tar.gz
       # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b7881
       tmp_extract_dir=$(mktemp -d)
       tar -xzf llamacpp-amd64+rocm.tar.gz -C $tmp_extract_dir --no-same-owner --no-same-permissions
