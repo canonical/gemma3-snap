@@ -164,8 +164,8 @@ parts:
   llamacpp:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -175,8 +175,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -200,9 +200,9 @@ parts:
       craftctl default
       # Download and extract llama.cpp ROCm build from GitHub releases
       for i in {0..3}; do
-        wget -nv https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
+        wget -nv https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+rocm.tar.gz.part0${i}
       done
-      # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b7881
+      # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b8287
       # Before extracting, concatenate the split archive parts into a single tar.gz file
       cat llamacpp-amd64+rocm.tar.gz.part00 \
           llamacpp-amd64+rocm.tar.gz.part01 \
@@ -318,13 +318,13 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b7881
+    version: b8287
 
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
-    version: b7881
+    version: b8287
 
   llamacpp-rocm:
     type: standard
