@@ -2,8 +2,6 @@ environment:
 - OPENAI_BASE_PATH=/v1
 # Add llama.cpp binaries
 - PATH=$PATH:$COMPONENT/bin
-# Add ROCm shared libraries
-- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP_COMPONENTS/rocmlib/lib
 # Add llama.cpp-built shared libraries
 - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/bin
 # Add staged shared libraries
