@@ -12,7 +12,7 @@ confinement: strict
 assumes:
   - snapd2.68 # for components support
 
-compression: xz
+compression: lzo
 
 platforms:
   amd64:
@@ -151,6 +151,7 @@ parts:
       "llamacpp/*": (component/llamacpp)
       "llamacpp-cuda/*": (component/llamacpp-cuda)
       "llamacpp-rocm/*": (component/llamacpp-rocm)
+      "rocmlib/*": (component/rocmlib)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
@@ -199,18 +200,22 @@ parts:
       set +x # reduce noise
       craftctl default
       # Download and extract llama.cpp ROCm build from GitHub releases
-      for i in {0..3}; do
-        wget -nv https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
+      for i in {0..2}; do
+        wget https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
       done
       # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b7881
       # Before extracting, concatenate the split archive parts into a single tar.gz file
       cat llamacpp-amd64+rocm.tar.gz.part00 \
           llamacpp-amd64+rocm.tar.gz.part01 \
           llamacpp-amd64+rocm.tar.gz.part02 \
-          llamacpp-amd64+rocm.tar.gz.part03 \
         > llamacpp-amd64+rocm.tar.gz
       rm llamacpp-amd64+rocm.tar.gz.part*
-      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME --no-same-owner --no-same-permissions
+      tmp_extract_dir=$(mktemp -d)
+      tar -xzf llamacpp-amd64+rocm.tar.gz -C $tmp_extract_dir --no-same-owner --no-same-permissions
+      mkdir -p $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME/bin $CRAFT_COMPONENT_ROCMLIB_PRIME/lib
+      cp -a $tmp_extract_dir/bin/. $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME/bin/
+      cp -a $tmp_extract_dir/lib/. $CRAFT_COMPONENT_ROCMLIB_PRIME/lib/
+      rm -rf $tmp_extract_dir
       rm llamacpp-amd64+rocm.tar.gz
 
   openvino-model-server:
@@ -328,8 +333,13 @@ components:
 
   llamacpp-rocm:
     type: standard
-    summary: llama.cpp with ROCm backend
+    summary: llama.cpp linked to ROCm backend
     description: LLM inference in C/C++ on AMD GPUs
+
+  rocmlib:
+    type: standard
+    summary: ROCm library for llama.cpp
+    description: ROCm library required for llama.cpp ROCm backend
 
   openvino-model-server:
     type: standard
