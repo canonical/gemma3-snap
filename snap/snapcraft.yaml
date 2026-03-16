@@ -183,20 +183,16 @@ parts:
       # move everything, including the staged packages
       "*": (component/llamacpp-cuda)
   
-  llamacpp-rocm-dependencies:
-    plugin: nil
-    stage-packages:
-      - libgomp1
-      - libatomic1
-    organize:
-      "*": (component/llamacpp-rocm)
-  
   llamacpp-rocm:
     plugin: dump
     # Detailed instructions on how to create llama.cpp with rocm support release archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b8287
     source:
       - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+rocm.tar.gz
       - on arm64: components/llamacpp-rocm
+    stage-packages:
+      - on amd64:
+        - libgomp1
+        - libatomic1
     organize:
       "*": (component/llamacpp-rocm)
 
