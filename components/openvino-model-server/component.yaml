@@ -1,5 +1,15 @@
+servers:
+  openvino:
+    protocol: http
+    base-path: /v1
+  kserve:
+    protocol: http
+    base-path: /2
+  openai:
+    protocol: http
+    base-path: /v3
+
 environment:
-  - OPENAI_BASE_PATH=/v3
   # Add OVMS binaries
   - PATH=$PATH:$COMPONENT/bin
   # Add staged shared objects
