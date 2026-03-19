@@ -12,7 +12,7 @@ confinement: strict
 assumes:
   - snapd2.68 # for components support
 
-compression: xz
+compression: lzo
 
 platforms:
   amd64:
@@ -199,35 +199,18 @@ parts:
       # move everything, including the staged packages
       "*": (component/llamacpp-cuda)
   
-  llamacpp-rocm-dependencies:
-    plugin: nil
+  llamacpp-rocm:
+    plugin: dump
+    # Detailed instructions on how to create llama.cpp with rocm support release archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b8287
+    source:
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+rocm.tar.gz
+      - on arm64: components/llamacpp-rocm
     stage-packages:
-      - libgomp1
-      - libatomic1
+      - on amd64:
+        - libgomp1
+        - libatomic1
     organize:
       "*": (component/llamacpp-rocm)
-  
-  llamacpp-rocm:
-    plugin: nil
-    build-packages:
-      - wget
-    override-prime: |
-      set +x # reduce noise
-      craftctl default
-      # Download and extract llama.cpp ROCm build from GitHub releases
-      for i in {0..3}; do
-        wget -nv https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+rocm.tar.gz.part0${i}
-      done
-      # Detailed instructions on how to create and split this archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b7881
-      # Before extracting, concatenate the split archive parts into a single tar.gz file
-      cat llamacpp-amd64+rocm.tar.gz.part00 \
-          llamacpp-amd64+rocm.tar.gz.part01 \
-          llamacpp-amd64+rocm.tar.gz.part02 \
-          llamacpp-amd64+rocm.tar.gz.part03 \
-        > llamacpp-amd64+rocm.tar.gz
-      rm llamacpp-amd64+rocm.tar.gz.part*
-      tar -xzf llamacpp-amd64+rocm.tar.gz -C $CRAFT_COMPONENT_LLAMACPP_ROCM_PRIME --no-same-owner --no-same-permissions
-      rm llamacpp-amd64+rocm.tar.gz
 
   openvino-model-server:
     plugin: dump
@@ -344,7 +327,7 @@ components:
 
   llamacpp-rocm:
     type: standard
-    summary: llama.cpp with ROCm backend
+    summary: llama.cpp linked to ROCm backend
     description: LLM inference in C/C++ on AMD GPUs
 
   openvino-model-server:
