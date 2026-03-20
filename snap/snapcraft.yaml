@@ -43,9 +43,6 @@ layout:
   # Intel icd files use an absolute path to Intel OpenCL shared objects. Use a layout to mount the so files at the expected location
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
-  # Under wsl the libraries are expected in /usr/lib/wsl. This is required in addition to setting LD_LIBRARY_PATH.
-  /usr/lib/wsl:
-    bind: $SNAP_COMMON/wsl
 
 plugs:
   intel-npu:
