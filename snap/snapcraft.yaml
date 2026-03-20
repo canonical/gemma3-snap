@@ -374,7 +374,7 @@ apps:
       - network
     environment:
       LD_LIBRARY_PATH: /usr/lib/wsl/lib:$LD_LIBRARY_PATH
-      CHAT: enabled
+      ADDITIONAL_FEATURES: chat
 
   server:
     command: bin/server.sh
