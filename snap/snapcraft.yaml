@@ -170,13 +170,6 @@ parts:
       # Exclude everything not explicitly organized
       - -*
 
-  # Symlink /var/lib/snapd/hostfs/usr/lib/wsl to $SNAP/usr/lib/wsl so that layout can bind it to /usr/lib/wsl
-  wsl-workaround:
-    plugin: nil
-    override-build: |
-      mkdir -p $CRAFT_PART_INSTALL/usr/lib
-      ln -s /var/lib/snapd/hostfs/usr/lib/wsl $CRAFT_PART_INSTALL/usr/lib/wsl
-
   llamacpp:
     plugin: dump
     source:
