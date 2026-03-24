@@ -43,9 +43,9 @@ layout:
   # Intel icd files use an absolute path to Intel OpenCL shared objects. Use a layout to mount the so files at the expected location
   /usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
-  # Under wsl the libraries are expected in /usr/lib/wsl. This is required in addition to setting LD_LIBRARY_PATH.
+  # Under wsl the libraries are expected in /usr/lib/wsl
   /usr/lib/wsl:
-    bind: $SNAP_COMMON/wsl
+    bind: $SNAP/usr/lib/wsl
 
 plugs:
   intel-npu:
@@ -169,6 +169,13 @@ parts:
     prime:
       # Exclude everything not explicitly organized
       - -*
+
+  # Symlink /var/lib/snapd/hostfs/usr/lib/wsl to $SNAP/usr/lib/wsl so that layout can bind it to /usr/lib/wsl
+  wsl-workaround:
+    plugin: nil
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/lib
+      ln -s /var/lib/snapd/hostfs/usr/lib/wsl $CRAFT_PART_INSTALL/usr/lib/wsl
 
   llamacpp:
     plugin: dump
@@ -365,14 +372,10 @@ apps:
       - opengl
       # To access server over network socket
       - network
-    environment:
-      LD_LIBRARY_PATH: /usr/lib/wsl/lib:$LD_LIBRARY_PATH
 
   server:
     command: bin/server.sh
     daemon: simple
-    environment:
-      LD_LIBRARY_PATH: /usr/lib/wsl/lib:$LD_LIBRARY_PATH
     plugs:
       # For inference and hardware detection
       - opengl
