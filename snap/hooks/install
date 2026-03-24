@@ -17,7 +17,9 @@ modelctl set --package verbose="false"
 
 # Symlink /var/lib/snapd/hostfs/usr/lib/wsl to $SNAP_COMMON/usr/lib/wsl so that layout can bind it to /usr/lib/wsl
 mkdir -p $SNAP_COMMON/usr/lib
-ln -s /var/lib/snapd/hostfs/usr/lib/wsl $SNAP_COMMON/usr/lib/wsl
+# Remove existing directory if present, so symlink can replace it
+rm -rf $SNAP_COMMON/usr/lib/wsl
+ln -s /var/lib/snapd/hostfs/usr/lib/wsl $SNAP_COMMON/usr/lib/
 
 #
 # Auto select an engine

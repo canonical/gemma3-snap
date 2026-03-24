@@ -9,7 +9,9 @@ exec 2> >(logger --stderr --priority error --tag=$tag)
 
 # Symlink /var/lib/snapd/hostfs/usr/lib/wsl to $SNAP_COMMON/usr/lib/wsl so that layout can bind it to /usr/lib/wsl
 mkdir -p $SNAP_COMMON/usr/lib
-ln -s /var/lib/snapd/hostfs/usr/lib/wsl $SNAP_COMMON/usr/lib/wsl
+# Remove existing directory if present, so symlink can replace it
+rm -rf $SNAP_COMMON/usr/lib/wsl
+ln -s /var/lib/snapd/hostfs/usr/lib/wsl $SNAP_COMMON/usr/lib/
 
 # Refresh the active engine
 # This involves applying changes to configurations and required snap components.

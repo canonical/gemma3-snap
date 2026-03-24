@@ -45,7 +45,7 @@ layout:
     bind: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/intel-opencl
   # Under wsl the libraries are expected in /usr/lib/wsl
   /usr/lib/wsl:
-    bind: $SNAP/usr/lib/wsl
+    bind: $SNAP_COMMON/usr/lib/wsl
 
 plugs:
   intel-npu:
