@@ -111,13 +111,22 @@ parts:
     plugin: nil
     stage-packages:
       - pciutils # lspci
-      - nvidia-utils-580 # nvidia-smi, used for NVIDIA vRAM and CUDA Capability detection
       - clinfo # used for Intel GPU vRAM detection. It depends on intel-opencl-icd
-    prime:
-      # Exclude nvidia icd to avoid clinfo from looking up properties for nvidia GPUs.
-      # See: https://github.com/canonical/inference-snaps/issues/148
-      - -etc/OpenCL/vendors/nvidia.icd
-    
+
+  # Used for NVIDIA vRAM and CUDA Capability detection.
+  # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
+  nvidia-smi:
+    plugin: nil
+    build-packages:
+      - nvidia-utils-580
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp /usr/bin/nvidia-smi $CRAFT_PART_INSTALL/usr/bin/
+      
+      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/nvidia-utils-580/
+      mkdir -p $license_dir
+      cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
+
   # OpenCL ICD and libigdgmm are required for Intel GPU vRAM lookup with clinfo
   intel-opencl-icd:
     plugin: nil
@@ -200,7 +209,7 @@ parts:
     plugin: dump
     source:
       # Source OVMS binaries only on amd64
-      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2026.0/ovms_ubuntu24_python_on.tar.gz
+      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
       - on arm64: components/openvino-model-server
     stage-packages:
       - on amd64:
