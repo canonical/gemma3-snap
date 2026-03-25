@@ -1,5 +1,5 @@
 servers:
-  openvino:
+  tensorflow-serving:
     protocol: http
     base-path: /v1
   kserve:
