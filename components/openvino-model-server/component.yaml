@@ -4,7 +4,7 @@ servers:
     base-path: /v1
   kserve:
     protocol: http
-    base-path: /2
+    base-path: /v2
   openai:
     protocol: http
     base-path: /v3
