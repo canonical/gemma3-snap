@@ -16,13 +16,6 @@ if [ -n "$openai_url" ]; then
   jq -n \
     --arg base_url "$openai_url" \
     '{
-      "enable": true,
-      "base_url": $base_url,
-      "auth_type": "bearer",
-      "api_key": "-",
-      "tags": [],
-      "prefix_id": "",
-      "model_ids": [],
-      "connection_type": "external"
+      "base_url": $base_url
     }' > "$OWUI_SHARE/openai.json"
 fi
