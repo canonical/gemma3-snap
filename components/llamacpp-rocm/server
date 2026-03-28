@@ -10,6 +10,9 @@ if [ "${verbose}" = "true" ]; then
   EXTRA_ARGS+=(--verbose)
 fi
 
+# In order to use the ROCm libraries, we need to run the server from the bin directory
+# otherwise, the server will fail to load the ROCm libraries and will run on the CPU.
+cd $SNAP_COMPONENTS/llamacpp-rocm/bin
 set -x
 exec llama-server \
   --model "$MODEL_FILE" \

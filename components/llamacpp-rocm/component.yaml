@@ -10,6 +10,6 @@ environment:
 # Add llama.cpp binaries
 - PATH=$PATH:$COMPONENT/bin
 # Add llama.cpp-built shared libraries
-- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/bin
+- LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/lib
 # Add staged shared libraries
 - LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COMPONENT/usr/lib/$ARCH_TRIPLET
