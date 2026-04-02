@@ -93,34 +93,19 @@ parts:
     organize:
       "*": engines/
 
-  local-cli:
-    # source: ./inference-snaps-cli
-    source: https://github.com/canonical/inference-snaps-cli.git
-    source-branch: IENG-2277-wait-for-component-in-status
-    plugin: go
-    build-snaps:
-      - go/1.26/stable
+  cli:
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-arm64.tar.xz
+    plugin: dump
     override-build: |
-      craftctl default
+      mkdir -p bin
+      mv cli bin/modelctl
 
       # For tab completion
-      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/gemma3
-    organize:
-      bin/cli: bin/modelctl
+      ln --symbolic ./modelctl bin/gemma3
 
-  # cli:
-  #   source:
-  #     - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.36/inference-snaps-cli-linux-amd64.tar.xz
-  #     - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.36/inference-snaps-cli-linux-arm64.tar.xz
-  #   plugin: dump
-  #   override-build: |
-  #     mkdir -p bin
-  #     mv cli bin/modelctl
-
-  #     # For tab completion
-  #     ln --symbolic ./modelctl bin/gemma3
-
-  #     craftctl default
+      craftctl default
     
   cli-dependencies:
     plugin: nil
