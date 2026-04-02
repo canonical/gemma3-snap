@@ -2,4 +2,13 @@
 
 sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 
-exec "$SNAP_COMPONENTS/llamacpp-rocm/server" --mmproj "$MMPROJ_FILE" --sleep-idle-seconds "$sleep_idle_seconds"
+mmproj=$MMPROJ_FILE
+sideloaded_mmproj="$(modelctl get sideloaded.mmproj)"
+
+if [[ -n "$sideloaded_mmproj" && "$sideloaded_mmproj" != "false" ]]; then
+    echo "Using sideloaded mmproj: $mmproj"
+    mmproj="$sideloaded_mmproj"
+fi
+
+exec "$SNAP_COMPONENTS/llamacpp-rocm/server" --mmproj "$mmproj" --sleep-idle-seconds "$sleep_idle_seconds"
+

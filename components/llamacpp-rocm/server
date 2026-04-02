@@ -10,9 +10,16 @@ if [ "${verbose}" = "true" ]; then
   EXTRA_ARGS+=(--verbose)
 fi
 
+model=$MODEL_FILE
+sideloaded_model="$(modelctl get sideloaded.model)"
+if [[ -n "$sideloaded_model" && "$sideloaded_model" != "false" ]]; then
+    echo "Using sideloaded model: $model"
+    model="$sideloaded_model"
+fi
+
 set -x
 exec llama-server \
-  --model "$MODEL_FILE" \
+  --model "$model" \
   --port "$port" \
   --host "$host" \
   --no-warmup \

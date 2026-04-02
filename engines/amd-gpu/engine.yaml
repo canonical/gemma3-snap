@@ -60,3 +60,5 @@ components:
   - mmproj-f16-4b-gguf
 configurations:
   sleep-idle-seconds: 600
+  sideloaded.model: false
+  sideloaded.mmproj: false
