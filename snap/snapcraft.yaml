@@ -94,20 +94,35 @@ parts:
     organize:
       "*": engines/
 
-  cli:
-    source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-arm64.tar.xz
-    plugin: dump
+  local-cli:
+    # source: ./inference-snaps-cli
+    source: https://github.com/canonical/inference-snaps-cli.git
+    source-branch: webui-simple
+    plugin: go
+    build-snaps:
+      - go/1.26/stable
     override-build: |
-      mkdir -p bin
-      mv cli bin/modelctl
+      craftctl default
 
       # For tab completion
-      ln --symbolic ./modelctl bin/gemma3
+      ln --symbolic ./modelctl $CRAFT_PART_INSTALL/bin/gemma3
+    organize:
+      bin/cli: bin/modelctl
 
-      craftctl default
-    
+  # cli:
+  #   source:
+  #     - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-amd64.tar.xz
+  #     - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-arm64.tar.xz
+  #   plugin: dump
+  #   override-build: |
+  #     mkdir -p bin
+  #     mv cli bin/modelctl
+
+  #     # For tab completion
+  #     ln --symbolic ./modelctl bin/gemma3
+
+  #     craftctl default
+  
   cli-dependencies:
     plugin: nil
     stage-packages:
@@ -116,7 +131,7 @@ parts:
 
   # Used for NVIDIA vRAM and CUDA Capability detection.
   # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
-  nvidia-smi:
+  cli-nvidia-smi:
     plugin: nil
     build-packages:
       - nvidia-utils-580
@@ -129,7 +144,7 @@ parts:
       cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
 
   # OpenCL ICD and libigdgmm are required for Intel GPU vRAM lookup with clinfo
-  intel-opencl-icd:
+  cli-intel-opencl-icd:
     plugin: nil
     build-packages:
       - wget
