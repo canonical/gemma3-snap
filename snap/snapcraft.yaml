@@ -86,6 +86,7 @@ parts:
     organize:
       "server.sh": bin/
       "completion.bash": bin/
+      "ui-server.sh": bin/
 
   engines:
     source: engines
@@ -152,6 +153,13 @@ parts:
       fi
       
       craftctl default
+
+  webui:
+    plugin: dump
+    source: https://github.com/canonical/inference-snaps-ui.git
+    source-tag: v1.0.0-beta
+    organize:
+      "static": etc/webui/
 
   local-component-files:
     plugin: dump
@@ -388,3 +396,9 @@ apps:
       - npu-libs
       # Needed to detect AMD rocm capable device
       - process-control
+
+  ui:
+    command: bin/ui-server.sh
+    daemon: simple
+    plugs:
+      - network-bind
