@@ -1,8 +1,8 @@
-#!/bin/bash -eu
+#!/bin/bash
+set -euo pipefail
 
 port="$(modelctl get webui.http.port)"
 host="$(modelctl get webui.http.host)"
-
 
 engine="$(modelctl status --format=json | jq -r .engine)"
 
