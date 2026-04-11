@@ -156,7 +156,7 @@ parts:
 
   webui:
     plugin: dump
-    source: https://github.com/canonical/inference-snaps-ui/releases/download/vuejs-0.0.0/inference-snaps-ui-805b1eab3f2d08e76f479effbaa8d7a6f67fef06.zip
+    source: https://github.com/canonical/inference-snaps-ui/releases/download/vuejs-0.0.1/inference-snaps-ui-be7a23a3aa47ecdc6b88484c8520baa0e72c1b62.zip
     source-type: zip
     organize:
       "*": etc/webui/
