@@ -96,8 +96,8 @@ parts:
 
   cli:
     source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.37/inference-snaps-cli-linux-arm64.tar.xz
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.39/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.39/inference-snaps-cli-linux-arm64.tar.xz
     plugin: dump
     override-build: |
       mkdir -p bin
@@ -181,8 +181,8 @@ parts:
   llamacpp:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -192,8 +192,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b7881/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -204,7 +204,7 @@ parts:
     plugin: dump
     # Detailed instructions on how to create llama.cpp with rocm support release archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b8287
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8287/llamacpp-amd64+rocm.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
       - on arm64: components/llamacpp-rocm
     stage-packages:
       - on amd64:
@@ -318,13 +318,13 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b7881
+    version: b8305
 
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
-    version: b7881
+    version: b8305
 
   llamacpp-rocm:
     type: standard
@@ -354,7 +354,7 @@ components:
   mmproj-f16-4b-gguf:
     type: standard
     summary: MMProj for Gemma 3 4B
-    description: Multimodal projector for Qwen 2.5 VL 3B
+    description: Multimodal projector for 4B GGUF models
 
   model-4b-it-int4-fq-ov:
     type: standard
