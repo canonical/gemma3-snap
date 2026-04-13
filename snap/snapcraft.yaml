@@ -157,9 +157,9 @@ parts:
   webui:
     plugin: dump
     source: https://github.com/canonical/inference-snaps-ui.git
-    source-tag: v1.0.0-beta
+    source-tag: v1.0.0-beta.2
     organize:
-      "static": etc/webui/
+      "static": webui/
 
   local-component-files:
     plugin: dump
@@ -397,7 +397,7 @@ apps:
       # Needed to detect AMD rocm capable device
       - process-control
 
-  ui:
+  ui-server:
     command: bin/ui-server.sh
     daemon: simple
     plugs:
