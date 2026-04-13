@@ -15,4 +15,4 @@ else
     capabilities="text, vision"
 fi
 
-exec modelctl serve-ui "$SNAP/etc/webui" --port "$port" --host "$host" --capabilities "$capabilities"
+exec modelctl serve-ui "$SNAP/webui" --port "$port" --host "$host" --capabilities "$capabilities"

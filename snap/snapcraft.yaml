@@ -84,9 +84,9 @@ parts:
     stage-packages:
       - jq
     organize:
-      "server.sh": bin/
       "completion.bash": bin/
-      "ui-server.sh": bin/
+      "server.sh": bin/
+      "server-webui.sh": bin/
 
   engines:
     source: engines
@@ -397,8 +397,8 @@ apps:
       # Needed to detect AMD rocm capable device
       - process-control
 
-  ui-server:
-    command: bin/ui-server.sh
+  server-webui:
+    command: bin/server-webui.sh
     daemon: simple
     plugs:
       - network-bind
