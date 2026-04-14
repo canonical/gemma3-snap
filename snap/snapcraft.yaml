@@ -158,7 +158,7 @@ parts:
     plugin: dump
     source: https://github.com/canonical/inference-snaps-ui/releases/download/v1.0.0-test.4/inference-snaps-ui.tar.xz
     organize:
-      "*": etc/webui/
+      "*": webui/
 
   local-component-files:
     plugin: dump
