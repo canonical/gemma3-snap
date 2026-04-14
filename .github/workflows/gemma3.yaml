@@ -9,7 +9,7 @@ jobs:
   remove-test-label:
     uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@v2
     with:
-      label: ${{ vars.PR_BUILD_TRIGGER_LABEL }}
+      label: ${{ vars.PR_TRIGGER_TESTS_LABEL }}
 
   prepare-tests:
     name: Prepare tests
