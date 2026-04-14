@@ -13,7 +13,7 @@ jobs:
 
   prepare-tests:
     name: Prepare tests
-    if: (github.event.action == 'labeled' && github.event.label.name == '${{ vars.PR_TRIGGER_TESTS_LABEL }}')
+    if: ${{ github.event.action == 'labeled' && github.event.label.name == vars.PR_TRIGGER_TESTS_LABEL }}
     runs-on: ubuntu-latest
     outputs:
       build-success: ${{ steps.prepare.outputs.build-success }}
