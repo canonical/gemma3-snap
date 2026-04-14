@@ -10,7 +10,7 @@ jobs:
     uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@v2
     with:
       label: ${{ vars.PR_BUILD_TRIGGER_LABEL }}
-      
+
   prepare-tests:
     name: Prepare tests
     if: (github.event.action == 'labeled' && github.event.label.name == '${{ vars.PR_TRIGGER_TESTS_LABEL }}')
@@ -56,6 +56,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # exit with non-zero code if any command fails, if any variable is unset, or if any command in a pipeline fails
+          set -euo pipefail
           gh pr edit ${{ github.event.pull_request.number }} \
             --repo "${{ github.repository }}" \
             --add-label "${{ vars.PR_BUILD_TRIGGER_LABEL }}"
