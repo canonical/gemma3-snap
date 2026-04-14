@@ -23,7 +23,7 @@ jobs:
           set -euo pipefail
 
           commit_sha="${{ github.event.pull_request.head.sha }}"
-          successful_runs_count="$(gh run list --commit "$commit_sha" --json conclusion,workflowName --jq '[.[] | select(.conclusion == "success" and .workflowName == "Build PR when labeled")] | length')"
+          successful_runs_count="$(gh run list --repo "${{ github.repository }}" --commit "$commit_sha" --json conclusion,workflowName --jq '[.[] | select(.conclusion == "success" and .workflowName == "Build PR when labeled")] | length')"
 
           if [ "$successful_runs_count" -gt 0 ]; then
             echo "Found successful run(s) for commit $commit_sha"
@@ -51,7 +51,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr edit ${{ github.event.pull_request.number }} --add-label "${{ vars.PR_BUILD_TRIGGER_LABEL }}"
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --repo "${{ github.repository }}" \
+            --add-label "${{ vars.PR_BUILD_TRIGGER_LABEL }}"
 
   remove-test-label:
     uses: canonical/inference-snaps-dev/.github/workflows/remove-label.yaml@v2
