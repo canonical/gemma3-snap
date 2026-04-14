@@ -64,7 +64,7 @@ jobs:
   
   test:
     if: ${{ github.event.label.name == vars.PR_TEST_TRIGGER_LABEL }}
-    uses: ./.github/workflows/testflinger-tests.yaml
+    uses: .github/workflows/testflinger-tests.yaml
     with:
       snap-channel: latest/edge/pr-${{ github.event.pull_request.number }}
 
