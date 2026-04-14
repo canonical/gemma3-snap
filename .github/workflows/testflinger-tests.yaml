@@ -1,71 +1,79 @@
 name: Testflinger tests
 
 on:
-  # Manual trigger
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      channel:
-        description: 'Snap store channel'
+      snap-channel:
+        description: Snap channel to test
         required: true
         type: string
 
 jobs:
-  test:
-    name: Test
+  test-multimodal-prompt:
+    name: gemma3 ${{ matrix.jobs.select-engine }}
     strategy:
-      # max-parallel: Don't use this as the self-hosted Github runners team wants to see and fix scaling issues.
-      # These limits also do not apply to dynamic instances, like the standard self-hosted runners.
       fail-fast: false
       matrix:
         jobs:
-          - job_queue: docker-nvidia
-            expected_engine: nvidia-gpu-amd64
-            expected_tps: 2
-            nvidia_driver_version: "570"
-          - job_queue: 202409-35842 # ProLiant DL360 Gen9 with Intel(R) Xeon(R) CPU E5-2690 v3 @ 2.60GHz
-            select_engine: intel-cpu
-            expected_tps: 8 # samples: 8.51
+          - job-queue: maas-systemtests-amd64
+            provision-data: "distro: noble"
+            select-engine: cpu
+            test-chat-tps: true
+            test-image-prompt: true
 
-    runs-on: self-hosted-linux-amd64-jammy-private-endpoint-medium
+          - job-queue: mir-intel-noble
+            provision-data: "distro: noble"
+            select-engine: intel-cpu
+            test-chat-tps: true
+            test-image-prompt: true
 
-    env:
-      TEST_DIR: tests/testflinger
+          - job-queue: 202111-29603 # Alder Lake, GPU 8086:4680
+            provision-data: "distro: noble"
+            select-engine: intel-gpu
+            test-chat-tps: true
+            test-image-prompt: true
 
-    steps:
-      - name: Show configuration
-        run: |
-          echo ::notice::Channel: ${{ inputs.channel }}, \
-          Queue: ${{ matrix.jobs.job_queue }}, \
-          Engine: ${{ matrix.jobs.expected_engine }}, \
-          TPS: ${{ matrix.jobs.expected_tps }}
+          - job-queue: anbox-nvidia-amd64
+            provision-data: "distro: noble"
+            install-nvidia-driver-version: 550
+            select-engine: nvidia-gpu-amd64
+            test-chat-tps: true
+            expected-tps: 10
+            test-image-prompt: true
 
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          repository: canonical/inference-snaps-dev
+          # Skip nvidia-gpu-arm64 engine as we do not have a test machine for it
 
-      - name: Add config to testflinger job
-        env:
-          SNAP_NAME: gemma3
-          SNAP_CHANNEL: ${{ inputs.channel }}
-          JOB_QUEUE: ${{ matrix.jobs.job_queue }}
-          EXPECTED_ENGINE: ${{ matrix.jobs.expected_engine }}
-          EXPECTED_TPS: ${{ matrix.jobs.expected_tps }}
-          INSTALL_NVIDIA_DRIVER_VERSION: ${{ matrix.jobs.nvidia_driver_version }}
-          SELECT_ENGINE: ${{ matrix.jobs.select_engine }}
+          - job-queue: 202203-30094 # Core-i7-12850HX + Radeon PRO W6600M
+            provision-data: "distro: noble"
+            snap-connections: "process-control"
+            select-engine: amd-gpu
+            test-chat-tps: true
+            expected-tps: 10
+            test-image-prompt: true
 
-        run: |
-          envsubst \
-            < $TEST_DIR/testflinger.yaml \
-            > $TEST_DIR/testflinger.temp.yaml
-          mv $TEST_DIR/testflinger.temp.yaml $TEST_DIR/testflinger.yaml
+          - job-queue: maas-systemtests-amd64
+            provision-data: "distro: noble"
+            select-engine: cpu-xsmall
+            test-chat-tps: true
+            test-image-prompt: false # cpu-xsmall engine does not support image input
 
-      - name: Print testflinger job
-        run: |
-          cat ${{ env.TEST_DIR }}/testflinger.yaml
+    uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@main
+    secrets: inherit
+    with:
+      job-queue: ${{ matrix.jobs.job-queue }}
+      provision-data: ${{ matrix.jobs.provision-data }}
 
-      - name: Run testflinger job
-        uses: canonical/testflinger/.github/actions/submit@main
-        with:
-          poll: true
-          job-path: ${{ env.TEST_DIR }}/testflinger.yaml
+      snap-name: gemma3
+      snap-channel: ${{ inputs.snap-channel }}
+
+      install-nvidia-driver-version: ${{ matrix.jobs.install-nvidia-driver-version }}
+      install-intel-npu-driver: ${{ matrix.jobs.install-intel-npu-driver == true }}
+      snap-connections: ${{ matrix.jobs.snap-connections }}
+
+      expected-engine: ${{ matrix.jobs.expected-engine }}
+      select-engine: ${{ matrix.jobs.select-engine }}
+
+      test-chat-tps: ${{ matrix.jobs.test-chat-tps == true }}
+      expected-tps: ${{ matrix.jobs.expected-tps }}
+
+      test-image-prompt: ${{ matrix.jobs.test-image-prompt == true }}
