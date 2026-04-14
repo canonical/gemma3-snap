@@ -94,7 +94,7 @@ parts:
       "completion.bash": bin/
       "server.sh": bin/
       "server-webui.sh": bin/
-      "write-configs.sh": bin/
+      "export-shared-configs.sh": bin/
 
   engines:
     source: engines
