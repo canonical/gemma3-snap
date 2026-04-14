@@ -1,8 +1,6 @@
 #!/bin/bash -eu
 
-# Wait for component before querying status
-modelctl run true --wait-for-components
-status_json=$(modelctl status --format=json)
+status_json=$(modelctl status --format=json --wait-for-components)
 
 # Simple dump of status command in json
 mkdir -p "$STATUS_SHARE"
