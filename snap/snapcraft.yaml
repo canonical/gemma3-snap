@@ -24,6 +24,12 @@ slots:
     source:
       read:
         - &status-share $SNAP_DATA/share/status
+  open-webui:
+    interface: content
+    content: open-webui-config
+    source:
+      read:
+        - &owui-share $SNAP_DATA/share/open-webui
 
 environment:
   # Path to access current revision of components
@@ -35,6 +41,7 @@ environment:
   ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   # Status directory shared via content interface
   STATUS_SHARE: *status-share
+  OWUI_SHARE: *owui-share
 
 layout:
   # OpenCL looks in /etc/OpenCL/vendors for .icd files containing the paths to shared objects
@@ -87,6 +94,7 @@ parts:
       "completion.bash": bin/
       "server.sh": bin/
       "server-webui.sh": bin/
+      "export-shared-configs.sh": bin/
 
   engines:
     source: engines
