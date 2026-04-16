@@ -16,7 +16,6 @@ jobs:
       label: ${{ vars.PR_TEST_TRIGGER_LABEL }}
 
   build-pre-check:
-    name: Build pre-check
     if: ${{ github.event.label.name == vars.PR_TEST_TRIGGER_LABEL }}
     runs-on: ubuntu-latest
     outputs:
@@ -24,27 +23,11 @@ jobs:
     steps:
       - id: build-pre-check
         name: Check for existing successful build
+        uses: canonical/inference-snaps-testing/.github/actions/build-pre-check@IENG-2278-testing-workflow
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WORKFLOW_NAME: "Build and Test PR when labeled"
-        run: |
-          # exit with non-zero code if any command fails, if any variable is unset, or if any command in a pipeline fails
-          set -euo pipefail
-
-          commit_sha="${{ github.event.pull_request.head.sha }}"
-          successful_runs_count="$(gh run list \
-            --repo "${{ github.repository }}" \
-            --commit "$commit_sha" \
-            --json conclusion,workflowName \
-            --jq '[.[] | select(.conclusion == "success" and .workflowName == env.WORKFLOW_NAME)] | length')"
-
-          if [ "$successful_runs_count" -gt 0 ]; then
-            echo "Found successful run(s) for commit $commit_sha"
-            echo "build-success=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "No successful runs found for commit $commit_sha"
-            echo "build-success=false" >> "$GITHUB_OUTPUT"
-          fi
+        with:
+          workflow-name: ${{ github.workflow }}
   build-and-publish:
     needs: [build-pre-check]
     if: always() && ((github.event.label.name == vars.PR_BUILD_TRIGGER_LABEL) || (github.event.label.name == vars.PR_TEST_TRIGGER_LABEL && needs.build-pre-check.outputs.build-success == 'false'))
