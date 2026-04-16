@@ -29,7 +29,11 @@ jobs:
         with:
           workflow-name: ${{ github.workflow }}
   build-and-publish:
+    # This dependency ensures that build-and-publish runs after build-pre-check finishes.
     needs: [build-pre-check]
+    # Normally, build-and-publish would be skipped if build-pre-check is skipped because it depends on it.
+    # always() is added so build-and-publish still runs when build-pre-check is skipped,
+    # for example when PR_BUILD_TRIGGER_LABEL is added.
     if: always() && ((github.event.label.name == vars.PR_BUILD_TRIGGER_LABEL) || (github.event.label.name == vars.PR_TEST_TRIGGER_LABEL && needs.build-pre-check.outputs.build-success == 'false'))
     uses: canonical/inference-snaps-dev/.github/workflows/build-publish-snap.yaml@v2
     strategy:
@@ -47,7 +51,9 @@ jobs:
       store-credentials: ${{ secrets.STORE_LOGIN }}
   
   test:
+    # This dependency ensures that test runs after build-and-publish finishes.
     needs: [build-and-publish]
+    # always() is added so test still runs when build-and-publish is skipped, for example when build-pre-check  finds an existing successful build and skips build-and-publish.
     if: ${{ always() && github.event.label.name == vars.PR_TEST_TRIGGER_LABEL && (needs.build-and-publish.result == 'success' || needs.build-and-publish.result == 'skipped') }}
     uses: ./.github/workflows/testflinger-tests.yaml
     with:
