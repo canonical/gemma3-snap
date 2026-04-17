@@ -1,4 +1,4 @@
-name: Build and Test PR when labeled
+name: Build+Test PR
 
 on:
   pull_request:
