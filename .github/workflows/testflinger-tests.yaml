@@ -7,6 +7,12 @@ on:
         description: Snap channel to test
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      snap-channel:
+        description: Snap channel to test
+        required: true
+        type: string
 
 jobs:
   test-multimodal-prompt:
