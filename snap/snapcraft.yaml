@@ -104,8 +104,8 @@ parts:
 
   cli:
     source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.40/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.40/inference-snaps-cli-linux-arm64.tar.xz
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.41/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0-beta.41/inference-snaps-cli-linux-arm64.tar.xz
     plugin: dump
     override-build: |
       mkdir -p bin
@@ -164,7 +164,7 @@ parts:
 
   webui:
     plugin: dump
-    source: https://github.com/canonical/inference-snaps-ui.git
+    source: https://github.com/canonical/inference-snaps-webui.git
     source-tag: v1.0.0-beta.2
     organize:
       "static": webui/
@@ -189,8 +189,8 @@ parts:
   llamacpp:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -200,8 +200,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8305/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -326,13 +326,13 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b8305
+    version: b8589
 
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
-    version: b8305
+    version: b8589
 
   llamacpp-rocm:
     type: standard
