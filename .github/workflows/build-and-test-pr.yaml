@@ -53,7 +53,7 @@ jobs:
   test:
     # This dependency ensures that test runs after build-and-publish finishes.
     needs: [build-and-publish]
-    # always() is added so test still runs when build-and-publish is skipped, for example when build-pre-check  finds an existing successful build and skips build-and-publish.
+    # always() is added so test still runs when build-and-publish is skipped, for example when build-pre-check finds an existing successful build and skips build-and-publish.
     if: ${{ always() && github.event.label.name == vars.PR_TEST_TRIGGER_LABEL && (needs.build-and-publish.result == 'success' || needs.build-and-publish.result == 'skipped') }}
     uses: ./.github/workflows/testflinger-tests.yaml
     with:

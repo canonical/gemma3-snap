@@ -16,7 +16,7 @@ on:
 
 jobs:
   test-multimodal-prompt:
-    name: gemma3 ${{ matrix.jobs.select-engine }}
+    name: ${{ matrix.jobs.select-engine }} engine
     strategy:
       fail-fast: false
       matrix:
@@ -63,7 +63,7 @@ jobs:
             test-chat-tps: true
             test-image-prompt: false # cpu-xsmall engine does not support image input
 
-    uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@IENG-2278-testing-workflow
+    uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@v1
     secrets: inherit
     with:
       job-queue: ${{ matrix.jobs.job-queue }}
