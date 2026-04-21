@@ -15,7 +15,7 @@ on:
         type: string
 
 jobs:
-  test-multimodal-prompt:
+  test-snap:
     name: ${{ matrix.jobs.select-engine }} engine
     strategy:
       fail-fast: false

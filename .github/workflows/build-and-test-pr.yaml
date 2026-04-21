@@ -28,6 +28,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           workflow-name: ${{ github.workflow }}
+
   build-and-publish:
     # This dependency ensures that build-and-publish runs after build-pre-check finishes.
     needs: [build-pre-check]
