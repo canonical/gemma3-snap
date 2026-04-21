@@ -63,7 +63,7 @@ jobs:
             test-chat-tps: true
             test-image-prompt: false # cpu-xsmall engine does not support image input
 
-    uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@fix-clone-path
+    uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@v1
     secrets: inherit
     with:
       job-queue: ${{ matrix.jobs.job-queue }}
