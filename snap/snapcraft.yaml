@@ -188,8 +188,8 @@ parts:
   llamacpp:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64.tar.gz
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -199,8 +199,8 @@ parts:
   llamacpp-cuda:
     plugin: dump
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+cuda12.tar.gz
-      - on arm64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64+cuda12.tar.gz
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+cuda12.tar.gz
+      - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64+cuda12.tar.gz
     stage-packages:
       - libgomp1
     organize:
@@ -209,9 +209,8 @@ parts:
   
   llamacpp-rocm:
     plugin: dump
-    # Detailed instructions on how to create llama.cpp with rocm support release archive: https://github.com/jpm-canonical/llama.cpp-builds/releases/tag/b8287
     source:
-      - on amd64: https://github.com/jpm-canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
       - on arm64: components/llamacpp-rocm
     stage-packages:
       - on amd64:
