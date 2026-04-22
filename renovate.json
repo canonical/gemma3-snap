@@ -24,11 +24,11 @@
         "^snap/snapcraft\\.yaml$"
       ],
       "matchStrings": [
-        "https://github\\.com/jpm-canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp",
+        "https://github\\.com/canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp",
         "(?ms)^\\s*llamacpp[^:]*:\\s*$\\n(?:^\\s+.*$\\n)*?^\\s*version:\\s*(?<currentValue>b\\d+)\\s*$"
       ],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "jpm-canonical/llama.cpp-builds",
+      "depNameTemplate": "canonical/llama.cpp-builds",
       "versioningTemplate": "regex:^b(?<major>\\d+)$"
     },
     {
