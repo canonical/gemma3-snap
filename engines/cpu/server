@@ -1,6 +1,6 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 sleep_idle_seconds="$(modelctl get sleep-idle-seconds)"
 
-exec "$SNAP_COMPONENTS/llamacpp/server" --mmproj "$MMPROJ_FILE" --sleep-idle-seconds "$sleep_idle_seconds"
+exec "$SNAP_COMPONENTS/llamacpp/server" --mmproj "$MMPROJ_FILE" --sleep-idle-seconds "$sleep_idle_seconds" "$@"
 
