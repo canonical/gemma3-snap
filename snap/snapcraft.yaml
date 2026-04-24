@@ -223,9 +223,11 @@ parts:
       - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
       - on arm64: components/llamacpp-rocm
     override-build: |
-      # Move license files to be included in the snap, not the component
-      mkdir -p $CRAFT_PRIME/usr/share/doc/
-      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        # Move license files to be included in the snap, not the component
+        mkdir -p $CRAFT_PRIME/usr/share/doc/
+        mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
+      fi
 
       craftctl default
     stage-packages:
