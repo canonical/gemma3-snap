@@ -8,11 +8,10 @@ adopt-info: version
 
 grade: stable
 confinement: strict
+compression: lzo
 
 assumes:
   - snapd2.68 # for components support
-
-compression: lzo
 
 platforms:
   amd64:
@@ -34,11 +33,11 @@ slots:
 environment:
   # Path to access current revision of components
   SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  # To find shared libraries that are staged and moved to components
+  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   # This is to find the intel.icd file, containing the path to libigdrcl.so
   # Required for Intel GPU detection and communication
   OCL_ICD_VENDORS: $SNAP/etc/OpenCL/vendors
-  # To find shared libraries that are staged and moved to components
-  ARCH_TRIPLET: $CRAFT_ARCH_TRIPLET_BUILD_FOR
   # Status directory shared via content interface
   STATUS_SHARE: *status-share
   OWUI_SHARE: *owui-share
@@ -71,7 +70,6 @@ hooks:
     plugs: &install-plugs
       # For hardware detection
       - hardware-observe
-      - kernel-module-observe
       - opengl
   post-refresh:
     plugs: *install-plugs
@@ -115,7 +113,7 @@ parts:
       ln --symbolic ./modelctl bin/gemma3
 
       craftctl default
-    
+
   cli-dependencies:
     plugin: nil
     stage-packages:
@@ -124,7 +122,7 @@ parts:
 
   # Used for NVIDIA vRAM and CUDA Capability detection.
   # Only the binary is included to avoid staging libraries, which should instead be provided by the host through the opengl interface.
-  nvidia-smi:
+  cli-nvidia-smi:
     plugin: nil
     build-packages:
       - nvidia-utils-580
@@ -137,7 +135,7 @@ parts:
       cp /usr/share/doc/nvidia-utils-580/copyright $license_dir/
 
   # OpenCL ICD and libigdgmm are required for Intel GPU vRAM lookup with clinfo
-  intel-opencl-icd:
+  cli-intel-opencl-icd:
     plugin: nil
     build-packages:
       - wget
@@ -190,6 +188,12 @@ parts:
     source:
       - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64.tar.gz
       - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp
+
+      craftctl default
     stage-packages:
       - libgomp1
     organize:
@@ -201,6 +205,12 @@ parts:
     source:
       - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+cuda12.tar.gz
       - on arm64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-arm64+cuda12.tar.gz
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-cuda
+
+      craftctl default
     stage-packages:
       - libgomp1
     organize:
@@ -212,6 +222,12 @@ parts:
     source:
       - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
       - on arm64: components/llamacpp-rocm
+    override-build: |
+      # Move license files to be included in the snap, not the component
+      mkdir -p $CRAFT_PRIME/usr/share/doc/
+      mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
+
+      craftctl default
     stage-packages:
       - on amd64:
         - libgomp1
@@ -297,15 +313,7 @@ parts:
       # Add license files referenced in NOTICE
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE-gemma.md $license_dir/
-  llamacpp-license:
-    plugin: dump
-    source: https://github.com/ggerganov/llama.cpp.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/llama.cpp
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/
-      cp -r licenses/* $license_dir/
+
   openvino-model-server-license:
     plugin: dump
     source: https://github.com/openvinotoolkit/model_server.git
@@ -343,7 +351,7 @@ components:
     description: OpenVINO Model Server for serving models
     version: v2025.3
 
-  # 
+  #
   # Models
   #
 
@@ -388,14 +396,14 @@ apps:
     command: bin/server.sh
     daemon: simple
     plugs:
+      # For hardware detection
+      - hardware-observe
       # For inference and hardware detection
       - opengl
       # Needed to bind on network interfaces
       - network-bind
       # Needed to download resources
       - network
-      # For hardware detection
-      - hardware-observe
       # For sideloading models
       - home
       # Intel NPU access (device node)
