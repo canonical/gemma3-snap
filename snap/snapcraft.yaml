@@ -197,7 +197,6 @@ parts:
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
       "*": (component/llamacpp)
 
   llamacpp-cuda:
@@ -390,7 +389,7 @@ apps:
       # To access server over network socket
       - network
       # To open the browser using webui command
-      - desktop 
+      - desktop
     environment:
       ADDITIONAL_FEATURES: chat, webui
 
