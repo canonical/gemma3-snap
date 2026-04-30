@@ -10,9 +10,9 @@ engine="$(modelctl status --wait-for-components --format=json | jq -r .engine)"
 # The xsmall (gemma3 270m) and small (gemma3 1b) are text-only.
 suffix="${engine##*-}"
 if [[ "$suffix" == "small" || "$suffix" == "xsmall" ]]; then
-    capabilities="text"
+    capabilities="text, text:markdown"
 else 
-    capabilities="text, vision"
+    capabilities="text, text:markdown, vision"
 fi
 
 exec modelctl serve-webui "$SNAP/webui" --port "$port" --host "$host" --capabilities "$capabilities"
