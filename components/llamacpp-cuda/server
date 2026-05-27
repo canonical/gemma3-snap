@@ -13,6 +13,7 @@ fi
 set -x
 exec llama-server \
   --model "$MODEL_FILE" \
+  --alias "$MODEL_NAME" \
   --port "$port" \
   --host "$host" \
   --no-warmup \

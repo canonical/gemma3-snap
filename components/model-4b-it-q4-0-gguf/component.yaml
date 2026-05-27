@@ -1,2 +1,3 @@
 environment:
 - MODEL_FILE=$COMPONENT/gemma-3-4b-it-q4_0.gguf
+- MODEL_NAME=gemma3-4b-it-q4-0
