@@ -83,7 +83,6 @@ parts:
     source: . # To regenerate the git hash on every change
     build-packages:
       - jq
-      - git
       - git-lfs
     override-pull: |
       # Do nothing. This significantly reduces build time when sourcing large files.
