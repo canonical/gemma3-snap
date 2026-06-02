@@ -181,10 +181,10 @@ parts:
       "llamacpp/*": (component/llamacpp)
         #"llamacpp-cuda/*": (component/llamacpp-cuda)
         #"llamacpp-rocm/*": (component/llamacpp-rocm)
-        "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
         #"model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
-        "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
         #"openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
