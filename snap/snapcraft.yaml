@@ -1,9 +1,9 @@
 name: gemma3
-base: core22
+base: core24
 summary: Gemma 3 inference snap
 description: |
   This snap installs an optimized environment for inference with the Gemma 3 Model.
-
+   Just for test on mtk boards
 adopt-info: version
 
 grade: stable
