@@ -3,7 +3,7 @@ base: core24
 summary: Gemma 3 inference snap
 description: |
   This snap installs an optimized environment for inference with the Gemma 3 Model.
-   Just for test on mtk boards
+   Just for test on mtk boards. cpu-xsmall engine and 270M weights model
 adopt-info: version
 
 grade: stable
