@@ -1,5 +1,5 @@
 name: gemma3
-base: core24
+base: core22
 summary: Gemma 3 inference snap
 description: |
   This snap installs an optimized environment for inference with the Gemma 3 Model.
@@ -12,7 +12,6 @@ confinement: strict
 assumes:
   - snapd2.68 # for components support
 
-compression: lzo
 
 platforms:
   amd64:
@@ -180,13 +179,13 @@ parts:
     source: components
     organize:
       "llamacpp/*": (component/llamacpp)
-      "llamacpp-cuda/*": (component/llamacpp-cuda)
-      "llamacpp-rocm/*": (component/llamacpp-rocm)
-      "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
-      "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
+        #"llamacpp-cuda/*": (component/llamacpp-cuda)
+        #"llamacpp-rocm/*": (component/llamacpp-rocm)
+        #"mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
+        #"model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
-      "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
-      "openvino-model-server/*": (component/openvino-model-server)
+        #"model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
+        #"openvino-model-server/*": (component/openvino-model-server)
       # Add other components here
     prime:
       # Exclude everything not explicitly organized
