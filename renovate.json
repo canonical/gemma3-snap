@@ -1,64 +1,7 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ],
-  "git-submodules": {
-    "enabled": true
-  },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": "Update inference-snaps-cli",
-      "managerFilePatterns": [
-        "snap/snapcraft.yaml"
-      ],
-      "matchStrings": [
-        "https://github\\.com/canonical/inference-snaps-cli/releases/download/(?<currentValue>v[^/]+)/inference-snaps-cli"
-      ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "canonical/inference-snaps-cli",
-      "versioningTemplate": "semver"
-    },
-    {
-      "customType": "regex",
-      "description": "Update inference-snaps-webui",
-      "managerFilePatterns": [
-        "snap/snapcraft.yaml"
-      ],
-      "matchStrings": [
-        "https://github\\.com/canonical/inference-snaps-webui/releases/download/(?<currentValue>v[^/]+)/inference-snaps-webui"
-      ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "canonical/inference-snaps-webui",
-      "versioningTemplate": "semver"
-    },
-    {
-      "customType": "regex",
-      "description": "Update llama.cpp builds",
-      "managerFilePatterns": [
-        "snap/snapcraft.yaml"
-      ],
-      "matchStrings": [
-        "https://github\\.com/canonical/llama\\.cpp-builds/releases/download/(?<currentValue>[^/]+)/llamacpp",
-        "(?ms)^\\s*llamacpp[^:]*:\\s*$\\n(?:^\\s+.*$\\n)*?^\\s*version:\\s*(?<currentValue>b\\d+)\\s*$"
-      ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "canonical/llama.cpp-builds",
-      "versioningTemplate": "regex:^b(?<major>\\d+)$"
-    },
-    {
-      "customType": "regex",
-      "description": "Update openvino-model-server",
-      "managerFilePatterns": [
-        "snap/snapcraft.yaml"
-      ],
-      "matchStrings": [
-        "https://github\\.com/openvinotoolkit/model_server/releases/download/(?<currentValue>v[^/]+)/ovms"
-      ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "openvinotoolkit/model_server",
-      "versioningTemplate": "loose"
-    }
+    "config:recommended",
+    "github>canonical/inference-snaps-dev//renovate/default.jsonc#v2"
   ]
 }
+
