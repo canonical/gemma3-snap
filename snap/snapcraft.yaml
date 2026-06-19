@@ -340,13 +340,11 @@ components:
     type: standard
     summary: llama.cpp using default CPU instruction sets
     description: LLM inference in C/C++
-    version: b8589
 
   llamacpp-cuda:
     type: standard
     summary: llama.cpp with CUDA backend
     description: LLM inference in C/C++
-    version: b8589
 
   llamacpp-rocm:
     type: standard
@@ -357,7 +355,6 @@ components:
     type: standard
     summary: OpenVINO Model Server
     description: OpenVINO Model Server for serving models
-    version: v2025.3
 
   #
   # Models
