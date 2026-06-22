@@ -8,9 +8,9 @@ devices:
       architecture: amd64
       manufacturer-id: GenuineIntel
 
-memory: 5G
-disk-space: 10G
-components:
-  - openvino-model-server
-  - model-4b-it-int4-fq-ov
-# configurations:
+runtime: openvino-model-server
+
+model:
+  default: 4b-it-int4-fq-ov
+  options:
+    - 4b-it-int4-fq-ov

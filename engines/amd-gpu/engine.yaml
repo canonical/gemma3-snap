@@ -52,11 +52,14 @@ devices:
     - type: gpu
       vendor-id: 0x1002
       microarchitecture: gfx1201
-memory: 1G
-disk-space: 10G
-components:
-  - llamacpp-rocm
-  - model-4b-it-q4-0-gguf
-  - mmproj-f16-4b-gguf
+
+runtime: llamacpp-rocm
+
+model:
+  default: 4b-it-q4-0-gguf
+  options:
+    - 270m-it-q4-0-gguf
+    - 4b-it-q4-0-gguf
+
 configurations:
   sleep-idle-seconds: 600

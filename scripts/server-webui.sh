@@ -4,7 +4,7 @@ set -euo pipefail
 port="$(modelctl get webui.http.port)"
 host="$(modelctl get webui.http.host)"
 
-engine="$(modelctl status --wait-for-components --format=json | jq -r .engine)"
+engine="$(modelctl status --format=json | jq -r .engine)"
 
 # The capabilities depend on the engine size
 # The xsmall (gemma3 270m) and small (gemma3 1b) are text-only.

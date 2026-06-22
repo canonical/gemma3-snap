@@ -42,12 +42,12 @@ jobs:
           - job-queue: anbox-nvidia-amd64
             provision-data: "distro: noble"
             install-nvidia-driver-version: 550
-            select-engine: nvidia-gpu-amd64
+            select-engine: nvidia-gpu
             test-chat-tps: true
             expected-tps: 10
             test-image-prompt: true
 
-          # Skip nvidia-gpu-arm64 engine as we do not have a test machine for it
+          # Skip nvidia-gpu arm64 as we do not have a test machine for it
 
           - job-queue: 202203-30094 # Core-i7-12850HX + Radeon PRO W6600M
             provision-data: "distro: noble"
@@ -56,12 +56,6 @@ jobs:
             test-chat-tps: true
             expected-tps: 10
             test-image-prompt: true
-
-          - job-queue: maas-systemtests-amd64
-            provision-data: "distro: noble"
-            select-engine: cpu-xsmall
-            test-chat-tps: true
-            test-image-prompt: false # cpu-xsmall engine does not support image input
 
     uses: canonical/inference-snaps-testing/.github/workflows/test-snap.yaml@v1
     secrets: inherit

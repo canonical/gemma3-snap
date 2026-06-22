@@ -1,15 +1,18 @@
-name: cpu
-description: Use CPU with a good balance between speed and accuracy
+name: nvidia-gpu
+description: Use CUDA for inference on Nvidia GPUs
 vendor: Canonical Ltd
 grade: stable
 devices:
+  allof:
+    - type: gpu
+      vendor-id: 0x10de # Nvidia Corporation
   anyof:
     - type: cpu
       architecture: amd64
     - type: cpu
       architecture: arm64
 
-runtime: llamacpp
+runtime: llamacpp-cuda
 
 model:
   default: 4b-it-q4-0-gguf
