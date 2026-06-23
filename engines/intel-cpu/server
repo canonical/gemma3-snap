@@ -14,11 +14,11 @@ fi
 # OVMS does not work when using the alternative --model_name and --model_path arguments.
 # Issue: https://github.com/openvinotoolkit/model_server/issues/3492
 
-# Set --pipeline_type VLM  to working around an issue with the default
+# Set --pipeline_type VLM to work around an issue with the default
 # continuous batching pipeline, VLM_CB
 
 set -x
-ovms \
+exec ovms \
     --rest_port "$port" \
     --rest_bind_address "$host" \
     --source_model "$MODEL_NAME" \
