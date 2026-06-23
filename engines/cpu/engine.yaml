@@ -1,7 +1,11 @@
 name: cpu
-description: Use CPU with a good balance between speed and accuracy
+summary: Optimized for various CPUs
+description: |
+  This engine uses llama.cpp.
+
+  It is optimized for both amd64 and arm64 CPU architectures, for a wide range
+  of architecture variants.
 vendor: Canonical Ltd
-grade: stable
 devices:
   anyof:
     - type: cpu

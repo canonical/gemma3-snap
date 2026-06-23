@@ -1,7 +1,10 @@
 name: intel-cpu
-description: Use Intel CPUs
+summary: Optimized for Intel CPUs
+description: |
+  This engine uses OpenVINO Model Server.
+
+  It is optimized for a range of Intel CPUs.
 vendor: Intel Corporation
-grade: stable
 devices:
   allof:
     - type: cpu
