@@ -229,17 +229,17 @@ parts:
   
   llamacpp-rocm:
     plugin: dump
-    source:
-      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
-      - on arm64: snap/local/nil-source
+    source: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
+    override-pull: &amd64-only |
+      [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ] && craftctl default || exit 0
     override-build: |
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # Move license files to be included in the snap, not the component
         mkdir -p $CRAFT_PRIME/usr/share/doc/
         mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
-      fi
 
-      craftctl default
+        craftctl default
+      fi
     stage-packages:
       - on amd64:
         - libgomp1
@@ -249,10 +249,17 @@ parts:
 
   openvino-model-server:
     plugin: dump
-    source:
-      # Source OVMS binaries only on amd64
-      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
-      - on arm64: snap/local/nil-source
+    source: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
+    override-pull: *amd64-only
+    override-build: |
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        license_dir=$CRAFT_PRIME/usr/share/doc/openvino-model-server
+        mkdir -p $license_dir
+        mv LICENSE $license_dir/
+        mv thirdparty-licenses $license_dir/
+
+        craftctl default
+      fi
     stage-packages:
       - on amd64:
           - libxml2
@@ -272,12 +279,18 @@ parts:
       "lib": (component/openvino-model-server)
     stage:
       - -*
+    # This part is only for amd64
+    override-pull: *amd64-only
+    override-build: *amd64-only
+    override-stage: *amd64-only
+    override-prime: *amd64-only
 
   # For Intel GPU usage, amd64 only
   intel-compute-runtime:
     plugin: nil
     build-packages:
-      - wget
+      - on amd64:
+        - wget
     stage-packages:
       - on amd64:
           - ocl-icd-libopencl1
@@ -303,9 +316,9 @@ parts:
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
         cd $CRAFT_PART_BUILD
+
+        craftctl default
       fi # End of Intel Compute Runtime installation
-      
-      craftctl default
     organize:
       # move everything, including the staged packages
       "*": (component/openvino-model-server)
@@ -326,18 +339,9 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE-gemma.md $license_dir/
 
-  openvino-model-server-license:
-    plugin: dump
-    source: https://github.com/openvinotoolkit/model_server.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/  
-
 components:
   #
-  # Engines
+  # Runtimes
   #
 
   llamacpp:
