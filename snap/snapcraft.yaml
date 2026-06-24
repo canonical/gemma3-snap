@@ -229,9 +229,9 @@ parts:
   
   llamacpp-rocm:
     plugin: dump
-    source: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
-    override-pull: &amd64-only |
-      [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ] && craftctl default || exit 0
+    source:
+      - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
+      - on arm64: snap/local/nil-source
     override-build: |
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # Move license files to be included in the snap, not the component
@@ -249,8 +249,9 @@ parts:
 
   openvino-model-server:
     plugin: dump
-    source: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
-    override-pull: *amd64-only
+    source: 
+      - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
+      - on arm64: snap/local/nil-source
     override-build: |
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         license_dir=$CRAFT_PRIME/usr/share/doc/openvino-model-server
@@ -280,7 +281,8 @@ parts:
     stage:
       - -*
     # This part is only for amd64
-    override-pull: *amd64-only
+    override-pull: &amd64-only |
+      [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ] && craftctl default || exit 0
     override-build: *amd64-only
     override-stage: *amd64-only
     override-prime: *amd64-only
