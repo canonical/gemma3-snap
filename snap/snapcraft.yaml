@@ -2,7 +2,29 @@ name: gemma3
 base: core24
 summary: Gemma 3 inference snap
 description: |
-  This snap installs an optimized environment for inference with the Gemma 3 Model.
+  This snap installs an optimized environment for inference with Gemma 3.
+
+  Before you start, make sure to have the necessary drivers installed on the host:
+  https://documentation.ubuntu.com/inference-snaps/how-to/install-drivers/
+
+  **Install:**
+
+  `sudo snap install gemma3`
+
+  **Get help:**
+
+  `gemma3 --help`
+
+  **Licensing:**
+
+  The use of Gemma 3 is subject to Gemma's Terms of Use:
+  https://ai.google.dev/gemma/terms
+
+  The licenses of all the bundled software can be found inside the snap at `/snap/gemma3/current/usr/share/doc`.
+
+website: https://documentation.ubuntu.com/inference-snaps
+source-code: https://github.com/canonical/gemma3-snap
+issues: https://github.com/canonical/inference-snaps/issues
 
 adopt-info: version
 
