@@ -108,7 +108,7 @@ parts:
       # Do nothing. This significantly reduces build time when sourcing large files.
     override-build: |
       set -eo pipefail
-      cli_version=$($CRAFT_STAGE/bin/gemma3 version --format=json | jq .cli --raw-output)
+      cli_version=$($CRAFT_STAGE/bin/modelctl version --format=json | jq .cli --raw-output)
       git_hash=$(git -C "$SNAPCRAFT_PROJECT_DIR" describe --always)
       craftctl set version="${cli_version#v}+${git_hash}"
 
@@ -118,7 +118,6 @@ parts:
     stage-packages:
       - jq
     organize:
-      "completion.bash": bin/
       "server.sh": bin/
       "server-webui.sh": bin/
       "export-shared-configs.sh": bin/
@@ -129,14 +128,24 @@ parts:
     organize:
       "*": engines/
 
+  runtimes:
+    source: runtimes
+    plugin: dump
+    organize:
+      "*": runtimes/
+
+  models:
+    source: models
+    plugin: dump
+    organize:
+      "*": models/
+
   cli:
     source:
-      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0/inference-snaps-cli-linux-amd64.tar.xz
-      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v1.0.0/inference-snaps-cli-linux-arm64.tar.xz
+      - on amd64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.4/inference-snaps-cli-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps-cli/releases/download/v2.0.0-beta.4/inference-snaps-cli-linux-arm64.tar.xz
     plugin: dump
     override-build: |
-      mkdir -p bin
-      mv cli bin/modelctl
 
       # For tab completion
       ln --symbolic ./modelctl bin/gemma3
@@ -199,15 +208,10 @@ parts:
     plugin: dump
     source: components
     organize:
-      "llamacpp/*": (component/llamacpp)
-      "llamacpp-cuda/*": (component/llamacpp-cuda)
-      "llamacpp-rocm/*": (component/llamacpp-rocm)
       "mmproj-f16-4b-gguf/*": (component/mmproj-f16-4b-gguf)
       "model-4b-it-int4-fq-ov/*": (component/model-4b-it-int4-fq-ov)
       "model-270m-it-q4-0-gguf/*": (component/model-270m-it-q4-0-gguf)
       "model-4b-it-q4-0-gguf/*": (component/model-4b-it-q4-0-gguf)
-      "openvino-model-server/*": (component/openvino-model-server)
-      # Add other components here
     prime:
       # Exclude everything not explicitly organized
       - -*
@@ -226,6 +230,7 @@ parts:
     stage-packages:
       - libgomp1
     organize:
+      # move everything, including the staged packages
       "*": (component/llamacpp)
 
   llamacpp-cuda:
@@ -242,22 +247,21 @@ parts:
     stage-packages:
       - libgomp1
     organize:
-      # move everything, including the staged packages
       "*": (component/llamacpp-cuda)
   
   llamacpp-rocm:
     plugin: dump
     source:
       - on amd64: https://github.com/canonical/llama.cpp-builds/releases/download/b8589/llamacpp-amd64+rocm.tar.gz
-      - on arm64: components/llamacpp-rocm
+      - on arm64: snap/local/nil-source
     override-build: |
       if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
         # Move license files to be included in the snap, not the component
         mkdir -p $CRAFT_PRIME/usr/share/doc/
         mv licenses $CRAFT_PRIME/usr/share/doc/llama.cpp-rocm
-      fi
 
-      craftctl default
+        craftctl default
+      fi
     stage-packages:
       - on amd64:
         - libgomp1
@@ -267,10 +271,18 @@ parts:
 
   openvino-model-server:
     plugin: dump
-    source:
-      # Source OVMS binaries only on amd64
+    source: 
       - on amd64: https://github.com/openvinotoolkit/model_server/releases/download/v2025.4.1/ovms_ubuntu24_python_on.tar.gz
-      - on arm64: components/openvino-model-server
+      - on arm64: snap/local/nil-source
+    override-build: |
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        license_dir=$CRAFT_PRIME/usr/share/doc/openvino-model-server
+        mkdir -p $license_dir
+        mv LICENSE $license_dir/
+        mv thirdparty-licenses $license_dir/
+
+        craftctl default
+      fi
     stage-packages:
       - on amd64:
           - libxml2
@@ -282,7 +294,7 @@ parts:
 
   openvino-model-server-python-dependencies:
     plugin: python
-    source: components/openvino-model-server
+    source: snap/local/nil-source
     python-packages:
       - Jinja2==3.1.6
       - MarkupSafe==3.0.2
@@ -290,12 +302,19 @@ parts:
       "lib": (component/openvino-model-server)
     stage:
       - -*
+    # This part is only for amd64
+    override-pull: &amd64-only |
+      [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ] && craftctl default || exit 0
+    override-build: *amd64-only
+    override-stage: *amd64-only
+    override-prime: *amd64-only
 
   # For Intel GPU usage, amd64 only
   intel-compute-runtime:
     plugin: nil
     build-packages:
-      - wget
+      - on amd64:
+        - wget
     stage-packages:
       - on amd64:
           - ocl-icd-libopencl1
@@ -321,9 +340,9 @@ parts:
         dpkg --root=$CRAFT_PART_INSTALL --force-all -i *.deb
       
         cd $CRAFT_PART_BUILD
+
+        craftctl default
       fi # End of Intel Compute Runtime installation
-      
-      craftctl default
     organize:
       # move everything, including the staged packages
       "*": (component/openvino-model-server)
@@ -344,18 +363,9 @@ parts:
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE $license_dir/
       cp $SNAPCRAFT_PROJECT_DIR/LICENSE-gemma.md $license_dir/
 
-  openvino-model-server-license:
-    plugin: dump
-    source: https://github.com/openvinotoolkit/model_server.git
-    source-depth: 1
-    override-build: |
-      license_dir=$CRAFT_PART_INSTALL/usr/share/doc/openvino-model-server
-      mkdir -p $license_dir
-      cp LICENSE $license_dir/  
-
 components:
   #
-  # Engines
+  # Runtimes
   #
 
   llamacpp:
@@ -406,8 +416,8 @@ components:
 
 apps:
   gemma3:
-    command: bin/gemma3
-    completer: bin/completion.bash
+    command: bin/modelctl
+    completer: bin/snap-completer.bash
     plugs:
       # For hardware detection
       - hardware-observe

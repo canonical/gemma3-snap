@@ -1,7 +1,17 @@
 name: intel-gpu
-description: Use Intel integrated and discrete GPUs
+summary: Optimized for Intel GPUs
+description: |
+  This engine uses OpenVINO Model Server.
+
+  It is optimized for a range of Intel GPU families, including:
+  - Xe Graphics (Alchemist)
+  - Xe2 Graphics (Battlemage)
+  - Raptor Lake
+  - Meteor Lake
+  - Lunar Lake
+  - Arrow Lake
+  - Panther Lake
 vendor: Intel Corporation
-grade: stable
 devices:
   allof:
     - type: cpu
@@ -355,9 +365,9 @@ devices:
       vendor-id: 0x8086 # Intel
       device-id: 0xb0b0 # Panther Lake [Intel Graphics]
 
-memory: 5G
-disk-space: 10G
-components:
-  - openvino-model-server
-  - model-4b-it-int4-fq-ov
-# configurations:
+runtime: openvino-model-server
+
+model:
+  default: 4b-it-int4-fq-ov
+  options:
+    - 4b-it-int4-fq-ov
