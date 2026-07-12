@@ -25,7 +25,7 @@ jobs:
           ["arm64", "large", "noble", "self-hosted"]
         ]
       
-      build-init-script: 'prepare-models.sh'
+      build-init-script: 'download-models.sh'
       store-track: latest
       snap-name: gemma3
       smoke-test-engine: cpu
