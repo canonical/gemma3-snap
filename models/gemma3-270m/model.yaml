@@ -1,9 +1,8 @@
-id: 270m-it-q4-0-gguf
-name: 270m
+name: gemma3-270m
 
 description: Gemma 3 270M, a text-only instruction-tuned model
 model-card-url: https://huggingface.co/google/gemma-3-270m-it
-quantization: Q4_0
+quantization: it-q4-0
 
 disk-size: 200M
 

@@ -16,10 +16,10 @@ devices:
 runtime: llamacpp
 
 model:
-  default: 4b-it-q4-0-gguf
+  default: gemma3-4b
   options:
-    - 270m-it-q4-0-gguf
-    - 4b-it-q4-0-gguf
+    - gemma3-270m
+    - gemma3-4b
 
 configurations:
   sleep-idle-seconds: 600
