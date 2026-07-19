@@ -1,9 +1,9 @@
-id: 4b-it-int4-fq-ov
-name: 4b
+name: gemma3-4b-ov
+alias: gemma3-4b
 
 description: Gemma 3 4B, a multimodal (text + vision) instruction-tuned model, optimized for OpenVINO
 model-card-url: https://huggingface.co/google/gemma-3-4b-it
-quantization: INT4
+quantization: it-int4-fq
 
 disk-size: 2700M
 

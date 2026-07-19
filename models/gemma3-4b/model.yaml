@@ -1,9 +1,8 @@
-id: 4b-it-q4-0-gguf
-name: 4b
+name: gemma3-4b
 
 description: Gemma 3 4B, a multimodal (text + vision) instruction-tuned model
 model-card-url: https://huggingface.co/google/gemma-3-4b-it
-quantization: Q4_0
+quantization: it-q4-0
 
 disk-size: 2800M
 
