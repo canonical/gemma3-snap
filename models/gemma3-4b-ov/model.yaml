@@ -3,7 +3,7 @@ alias: gemma3-4b
 
 description: Gemma 3 4B, a multimodal (text + vision) instruction-tuned model, optimized for OpenVINO
 model-card-url: https://huggingface.co/google/gemma-3-4b-it
-quantization: it-int4-fq
+quantization: INT4
 
 disk-size: 2700M
 
