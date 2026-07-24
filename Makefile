@@ -76,5 +76,5 @@ download-model-4b-ov:
 	@echo "Downloading Gemma 3 4B OV INT4 FQ model artifacts..."
 	$(hf) download llmware/gemma-3-4b-it-ov-int4-fq \
 		--local-dir components/model-4b-it-int4-fq-ov/gemma-3-4b-it-ov-int4-fq/
-	@echo "OVMS writes graph.pbtxt at runtime; point it to /tmp because component files are read-only:"
+	@echo "OVMS writes graph.pbtxt at runtime; pointing it to /tmp because component files are read-only..."
 	ln -sfn /tmp/graph.pbtxt components/model-4b-it-int4-fq-ov/gemma-3-4b-it-ov-int4-fq/graph.pbtxt
