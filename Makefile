@@ -6,7 +6,7 @@ hf := pipx run --spec "huggingface_hub[cli]" hf
 SNAP_NAME ?= gemma3
 ENGINE ?= cpu
 
-.PHONY: all help init build install upload smoke-test install-deps init-submodules download-models download-model-270m download-model-4b download-model-4b-ov download-mmproj-4b
+.PHONY: all help init build install upload smoke-test install-deps init-submodules download-models download-model-270m download-model-4b download-model-4b-ov download-model-4b-mmproj
 
 all: help
 
@@ -55,7 +55,7 @@ init-submodules:
 		git submodule update --init; \
 	fi
 
-download-models: download-model-270m download-model-4b download-mmproj-4b download-model-4b-ov
+download-models: download-model-270m download-model-4b download-model-4b-mmproj download-model-4b-ov
 
 download-model-270m:
 	@echo "Downloading Gemma 3 270M Instruct model weights..."
@@ -67,7 +67,7 @@ download-model-4b:
 	$(hf) download unsloth/gemma-3-4b-it-GGUF gemma-3-4b-it-Q4_0.gguf \
 		--local-dir components/model-4b-it-q4-0-gguf/
 
-download-mmproj-4b:
+download-model-4b-mmproj:
 	@echo "Downloading Gemma 3 4B MMProj model..."
 	$(hf) download unsloth/gemma-3-4b-it-GGUF mmproj-F16.gguf \
 		--local-dir components/mmproj-f16-4b-gguf/
