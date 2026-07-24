@@ -1,7 +1,7 @@
 name: gemma3-4b
 
 description: Gemma 3 4B, a multimodal (text + vision) instruction-tuned model
-model-card-url: https://huggingface.co/google/gemma-3-4b-it
+model-card-url: https://huggingface.co/unsloth/gemma-3-4b-it-GGUF
 quantization: Q4_0
 
 disk-size: 2800M
@@ -15,6 +15,6 @@ components:
   - mmproj-f16-4b-gguf
 
 environment:
-  - MMPROJ_FILE=$SNAP_COMPONENTS/mmproj-f16-4b-gguf/mmproj-model-f16-4B.gguf
-  - MODEL_FILE=$SNAP_COMPONENTS/model-4b-it-q4-0-gguf/gemma-3-4b-it-q4_0.gguf
+  - MMPROJ_FILE=$SNAP_COMPONENTS/mmproj-f16-4b-gguf/mmproj-F16.gguf
+  - MODEL_FILE=$SNAP_COMPONENTS/model-4b-it-q4-0-gguf/gemma-3-4b-it-Q4_0.gguf
   - MODEL_NAME=gemma3-4b-it-q4-0
