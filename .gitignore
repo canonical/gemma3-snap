@@ -7,5 +7,6 @@ prime/
 *.comp
 squashfs-root
 
-# Build script artifact
-snapcraft.yaml
+# Model weights
+*.gguf
+components/
