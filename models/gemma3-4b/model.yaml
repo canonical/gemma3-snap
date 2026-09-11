@@ -17,4 +17,3 @@ components:
 environment:
   - MMPROJ_FILE=$SNAP_COMPONENTS/mmproj-f16-4b-gguf/mmproj-F16.gguf
   - MODEL_FILE=$SNAP_COMPONENTS/model-4b-it-q4-0-gguf/gemma-3-4b-it-Q4_0.gguf
-  - MODEL_NAME=gemma3-4b-it-q4-0

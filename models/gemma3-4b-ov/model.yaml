@@ -15,5 +15,4 @@ components:
   - model-4b-it-int4-fq-ov
 
 environment:
-  - MODEL_NAME=gemma-3-4b-it-ov-int4-fq
-  - MODEL_PATH=$SNAP_COMPONENTS/model-4b-it-int4-fq-ov
+  - MODEL_PATH=$SNAP_COMPONENTS/model-4b-it-int4-fq-ov/gemma-3-4b-it-ov-int4-fq
