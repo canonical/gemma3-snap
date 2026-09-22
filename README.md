@@ -1,17 +1,32 @@
-# Gemma3 snap
+# Gemma 3 inference snap
 [![gemma3](https://snapcraft.io/gemma3/badge.svg)](https://snapcraft.io/gemma3)
 
-This snap installs a hardware-optimized engine for inference with the [Gemma 3](https://deepmind.google/models/gemma/gemma-3/) multimodal language model.
+Gemma 3 is a multimodal language model from [Google DeepMind](https://deepmind.google/models/gemma/gemma-3/).
 
-Install:
-```
-sudo snap install gemma3 --beta
+Use this snap to quickly install an optimized environment for local inference with Gemma 3.
+
+The snap includes the following hardware-optimized inference engines:
+
+* cpu: Optimized for various CPUs
+* nvidia-gpu: CUDA-optimized for NVIDIA GPUs
+* amd-gpu: ROCm-optimized for AMD GPUs
+* intel-cpu: Optimized for Intel CPUs using OpenVINO Model Server
+* intel-gpu: Optimized for Intel GPUs using OpenVINO Model Server
+
+The most suitable engine is automatically selected based on the available hardware.
+
+#### Install
+```shell
+sudo snap install gemma3
 ```
 
-Get help:
+#### Run
+```shell
+gemma3
 ```
-gemma3 --help
-```
+
+> [!TIP]
+> Some accelerators require extra [drivers](https://documentation.ubuntu.com/inference-snaps/how-to/setup/drivers/) to be usable with this snap.
 
 ## Resources
 
