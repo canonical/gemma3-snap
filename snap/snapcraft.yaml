@@ -283,12 +283,19 @@ parts:
       - libcurl4
     organize:
       # move everything, including the staged packages
-      "LICENSE": usr/share/doc/openvino-model-server
       "*": (component/openvino-model-server)
     # This part is only for amd64
     override-pull: &amd64-only |
       [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ] && craftctl default || exit 0
-    override-build: *amd64-only
+    override-build: |
+      if [ "$CRAFT_ARCH_BUILD_FOR" == "amd64" ]; then
+        # Move license files to be included in the snap, not the component
+        license_dir=$CRAFT_PRIME/usr/share/doc/openvino-model-server
+        mkdir -p $license_dir
+        mv LICENSE $license_dir/
+        mv thirdparty-licenses $license_dir/
+        craftctl default
+      fi
     override-stage: *amd64-only
     override-prime: *amd64-only
 
