@@ -61,12 +61,10 @@ jobs:
             "test-image-prompt": true
           },
           {
-            "job-queue": "202203-30094",
+            "job-queue": "inference-snaps-amd-testing",
             "provision-data": "distro: noble",
-            "snap-connections": "process-control",
             "select-engine": "amd-gpu",
             "test-chat-tps": true,
-            "expected-tps": 10,
             "test-image-prompt": true
           }
         ]
